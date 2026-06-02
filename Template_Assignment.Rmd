@@ -21,7 +21,7 @@ require(yaml)
 
 # Title Page
 
-Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haavekost en ...
+Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haavekost en Jermaine Koreman
 
 Include the tutorial group number group 1.5
 
