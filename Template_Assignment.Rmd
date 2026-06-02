@@ -21,9 +21,9 @@ require(yaml)
 
 # Title Page
 
-Include your names
+Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haavekost en Jermaine Koreman
 
-Include the tutorial group number 'group 1.5'
+Include the tutorial group number group 1.5
 
 Include your tutorial lecturer's name
 
