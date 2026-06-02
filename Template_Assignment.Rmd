@@ -26,6 +26,8 @@ Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haaveko
 Include the tutorial group number group: 1.5
 
 Include your tutorial lecturer's name:
+Include your tutorial lecturer's name:Chantal Schouwenaar
+>>>>>>> 85d130eb228492501734ba45d46a227b4a6605b6
 
 # Part 1 - Identify a Social Problem
 
