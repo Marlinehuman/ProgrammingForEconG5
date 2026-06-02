@@ -23,7 +23,7 @@ require(yaml)
 
 Include your names
 
-Include the tutorial group number
+Include the tutorial group number 'group 1.5'
 
 Include your tutorial lecturer's name
 
@@ -35,9 +35,9 @@ Use APA referencing throughout your document. [Here's a link to some explanation
 
 Include the following:
 
--   Why is this relevant?
+- Why is this relevant?
 
--   ...
+- ...
 
 # Part 2 - Data Sourcing
 
@@ -69,9 +69,9 @@ These are things that are usually included in the metadata of the dataset. For y
 
 Think of things like:
 
--   Do the variables contain health information or SES information?
+- Do the variables contain health information or SES information?
 
--   Have they been measured by interviewing individuals or is the data coming from administrative sources?
+- Have they been measured by interviewing individuals or is the data coming from administrative sources?
 
 *For the sake of this example, I will continue with the assignment...*
 
