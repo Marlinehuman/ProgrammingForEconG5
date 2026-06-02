@@ -1,6 +1,6 @@
 ---
-title: "Template"
-author: "Studentnames and studentnumbers here"
+title: "development of housing pressure and residential vacancy in Amsterdam, Rotterdam and Utrecht between 2020 and 2025, and understanding coexistence and scarcity through price pressure, rental structure and urban density."
+author: "[Student (studentnummer)], [Student (studentnummer)], [Student (studentnummer)], [Student (studentnummer)] and [Jermaine Koreman (2866400)]."
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
@@ -21,11 +21,11 @@ require(yaml)
 
 # Title Page
 
-Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haavekost en Jermaine Koreman
+Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haavekost en Jermaine Koreman.
 
-Include the tutorial group number group 1.5
+Include the tutorial group number group: 1.5
 
-Include your tutorial lecturer's name
+Include your tutorial lecturer's name:
 
 # Part 1 - Identify a Social Problem
 
