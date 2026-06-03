@@ -45,7 +45,7 @@ This problem is relevant for several reasons:
 
 **2. Social relevance.** Access to affordable housing is widely considered a basic right. When access depends heavily on geography, spatial inequality deepens and social cohesion is undermined. The coexistence of shortage and vacancy raises difficult questions about the efficiency and fairness of the housing system.
 
-**3. Policy relevance.** Understanding where housing pressure is most severe — and where it coincides with vacancy — helps policymakers target interventions more effectively. A municipality-level analysis can inform decisions about new construction, rent regulation, and vacancy policies, and shows which areas need attention most urgently.
+**3. Policy relevance.** Understanding where housing pressure is most severe and where it coincides with vacancy helps policymakers target interventions more effectively. A municipality-level analysis can inform decisions about new construction, rent regulation, and vacancy policies, and shows which areas need attention most urgently.
 
 **4. Personal relevance.** As students at VU Amsterdam, we experience the consequences of housing pressure directly. By analyzing the problem at a national scale, we move beyond our own situation and investigate the structural forces shaping housing access across the Netherlands.
 
@@ -63,7 +63,7 @@ dataset <- midwest
 
 midwest is an example dataset included in the tidyverse package
 
-## 2.2 Provide a short summary of the dataset(s)
+## 2.2 Provide a short summary of the datasets
 
 ```{r}
 head(dataset)
