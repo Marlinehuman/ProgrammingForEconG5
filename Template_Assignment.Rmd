@@ -94,6 +94,14 @@ inline_code = TRUE
 
 These are things that are usually included in the metadata of the dataset. For your project, you need to provide us with the information from your metadata that we need to understand your dataset of choice.
 
+This dataset comes from CBS and contains information about Dutch municipalities for the years 2020 to 2025. It includes data on topics such as population, housing, income, and households.
+
+For our project, we mainly use the housing-related information. The dataset contains variables that can help us study housing pressure and vacancy across municipalities. Because the data cover multiple years, it is possible to see whether these patterns have changed over time.
+
+The exact meaning and units of the variables differ and are explained in the CBS metadata that accompany the dataset.
+
+`glimpse(dataset)`
+
 ## 2.3 Describe the type of variables included
 
 Think of things like:
