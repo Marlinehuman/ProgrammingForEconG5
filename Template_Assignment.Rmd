@@ -33,11 +33,23 @@ Use APA referencing throughout your document. [Here's a link to some explanation
 
 ## 1.1 Describe the Social Problem
 
-Include the following:
+The Dutch housing market is under unprecedented pressure. Across the Netherlands, rental prices have risen sharply, buying a home has become unaffordable for many households, and waiting lists for social housing continue to grow (CBS, 2025; Kences, 2025). At the same time, a paradox emerges: despite the apparent shortage, a significant number of dwellings remain unoccupied in many municipalities.
 
-- Why is this relevant?
+This combination of housing pressure and vacancy creates a social problem that does not affect all of the Netherlands equally. In some municipalities, housing pressure is severe and vacancy is low; in others, vacancy rates are surprisingly high despite national shortages. This spatial variation means that the opportunity to find affordable housing increasingly depends on where one lives — a form of geographic inequality that affects young adults, lower-income households, and people seeking to relocate.
 
-- ...
+### Why is this relevant?
+
+This problem is relevant for several reasons:
+
+**1. Economic relevance.** The housing market is a cornerstone of the economy. Rising housing costs reduce disposable income, limit labor mobility, and contribute to wealth inequality between homeowners and renters (CBS, 2025). Geographic differences in housing pressure also shape patterns of regional economic development.
+
+**2. Social relevance.** Access to affordable housing is widely considered a basic right. When access depends heavily on geography, spatial inequality deepens and social cohesion is undermined. The coexistence of shortage and vacancy raises difficult questions about the efficiency and fairness of the housing system.
+
+**3. Policy relevance.** Understanding where housing pressure is most severe — and where it coincides with vacancy — helps policymakers target interventions more effectively. A municipality-level analysis can inform decisions about new construction, rent regulation, and vacancy policies, and shows which areas need attention most urgently.
+
+**4. Personal relevance.** As students at VU Amsterdam, we experience the consequences of housing pressure directly. By analyzing the problem at a national scale, we move beyond our own situation and investigate the structural forces shaping housing access across the Netherlands.
+
+By quantifying and visualizing how housing pressure and vacancy vary across Dutch municipalities between 2020 and 2025, this project aims to make the scale and distribution of the problem visible, and to identify which types of municipalities face the sharpest paradox between scarcity and unused capacity.
 
 # Part 2 - Data Sourcing
 
