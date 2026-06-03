@@ -240,35 +240,175 @@ write_csv(kwb2020_selected, "kwb2020_clean.csv")
 
 #Cleaning 2021 ----
 
-# Open csv raw 2020
+# Open csv raw 2021
 
-kwb2020 <- read_csv("kwb2020_raw.csv",
+kwb2021 <- read_csv("kwb2021_raw.csv",
                     na = c(".", "", "NA"),
                     show_col_types = FALSE)
 
 # Filter on municipality basis
 
-kwb2020_municipalities <- kwb2020[kwb2020$recs == "Gemeente", ]
+kwb2021_municipalities <- kwb2021[kwb2021$recs == "Gemeente", ]
 
 # Check if there are no double municipalities (through gwb_code)
 
-sum(duplicated(kwb2020_municipalities$gwb_code))
+sum(duplicated(kwb2021_municipalities$gwb_code))
 
-# Add identifying year variable (2020)
+# Add identifying year variable (2021)
 
-kwb2020_municipalities$year <- 2020
+kwb2021_municipalities$year <- 2021
 
 # Filtering out unrelated variables
 
-available_vars <- selected_vars[selected_vars %in% names(kwb2020_municipalities)]
-kwb2020_selected <- kwb2020_municipalities[, available_vars]
+available_vars <- selected_vars[selected_vars %in% names(kwb2021_municipalities)]
+kwb2021_selected <- kwb2021_municipalities[, available_vars]
 
-summary(kwb2020_selected)
+summary(kwb2021_selected)
 
 # Adjust g_wozbag to scale
 
-kwb2020_selected$g_wozbag <- kwb2020_selected$g_wozbag * 1000
+kwb2021_selected$g_wozbag <- kwb2021_selected$g_wozbag * 1000
 
 # Save as clean 
 
-write_csv(kwb2020_selected, "kwb2020_clean.csv") WIP
+write_csv(kwb2021_selected, "kwb2021_clean.csv") 
+
+#Cleaning 2022 ----
+
+# Open csv raw 2022
+
+kwb2022 <- read_csv("kwb2022_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+
+# Filter on municipality basis
+
+kwb2022_municipalities <- kwb2022[kwb2022$recs == "Gemeente", ]
+
+# Check if there are no double municipalities (through gwb_code)
+
+sum(duplicated(kwb2022_municipalities$gwb_code))
+
+# Add identifying year variable (2020)
+
+kwb2022_municipalities$year <- 2022
+
+# Filtering out unrelated variables
+
+available_vars <- selected_vars[selected_vars %in% names(kwb2022_municipalities)]
+kwb2022_selected <- kwb2022_municipalities[, available_vars]
+
+summary(kwb2022_selected)
+
+# Adjust g_wozbag to scale
+
+kwb2022_selected$g_wozbag <- kwb2022_selected$g_wozbag * 1000
+
+# Save as clean 
+
+write_csv(kwb2022_selected, "kwb2022_clean.csv")
+
+#Cleaning 2023 ----
+
+# Open csv raw 2023
+
+kwb2023 <- read_csv("kwb2023_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+
+# Filter on municipality basis
+
+kwb2023_municipalities <- kwb2023[kwb2023$recs == "Gemeente", ]
+
+# Check if there are no double municipalities (through gwb_code)
+
+sum(duplicated(kwb2023_municipalities$gwb_code))
+
+# Add identifying year variable (2020)
+
+kwb2023_municipalities$year <- 2023
+
+# Filtering out unrelated variables
+
+available_vars <- selected_vars[selected_vars %in% names(kwb2023_municipalities)]
+kwb2023_selected <- kwb2023_municipalities[, available_vars]
+
+summary(kwb2023_selected)
+
+# Adjust g_wozbag to scale
+
+kwb2023_selected$g_wozbag <- kwb2023_selected$g_wozbag * 1000
+
+# Save as clean 
+
+write_csv(kwb2023_selected, "kwb2023_clean.csv")
+
+#Cleaning 2024 ----
+
+# Open csv raw 2024
+
+kwb2024 <- read_csv("kwb2024_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+
+# Filter on municipality basis
+
+kwb2024_municipalities <- kwb2024[kwb2024$recs == "Gemeente", ]
+
+# Check if there are no double municipalities (through gwb_code)
+
+sum(duplicated(kwb2024_municipalities$gwb_code))
+
+# Add identifying year variable (2020)
+
+kwb2024_municipalities$year <- 2024
+
+# Filtering out unrelated variables
+
+available_vars <- selected_vars[selected_vars %in% names(kwb2024_municipalities)]
+kwb2024_selected <- kwb2024_municipalities[, available_vars]
+
+summary(kwb2024_selected)
+
+# Adjust g_wozbag to scale
+
+kwb2024_selected$g_wozbag <- kwb2024_selected$g_wozbag * 1000
+
+# Save as clean 
+
+write_csv(kwb2024_selected, "kwb2024_clean.csv")
+
+#Cleaning 2025 ----
+
+# Open csv raw 2025
+
+kwb2025 <- read_csv("kwb2025_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+
+# Filter on municipality basis
+
+kwb2025_municipalities <- kwb2025[kwb2025$recs == "Gemeente", ]
+
+# Check if there are no double municipalities (through gwb_code)
+
+sum(duplicated(kwb2025_municipalities$gwb_code))
+
+# Add identifying year variable (2025)
+
+kwb2025_municipalities$year <- 2025
+
+# Filtering out unrelated variables
+
+available_vars <- selected_vars[selected_vars %in% names(kwb2025_municipalities)]
+kwb2025_selected <- kwb2025_municipalities[, available_vars]
+
+summary(kwb2025_selected)
+
+# Adjust g_wozbag to scale
+
+kwb2025_selected$g_wozbag <- kwb2025_selected$g_wozbag * 1000
+
+# Save as clean 
+
+write_csv(kwb2025_selected, "kwb2025_clean.csv")
