@@ -11,7 +11,7 @@ install.packages(c(
   "stringr"
 ))
 
-# Add packages to this session ----
+# Add packages. ----
 
 library(here)
 library(readxl)
@@ -22,6 +22,7 @@ library(tidyr)
 
 
 # Import the Excel files for the years: 2020-2026
+
 
 # 2020 ----
 
@@ -98,12 +99,12 @@ write_csv(
 
 ## Read Excel
 
-kwb2024raw <- read_excel("kwb2023.xlsx", 
+kwb2023raw <- read_excel("kwb2023.xlsx", 
                          sheet = 1, 
                          na = c(".", "", "NA"))
 ## Clean columnnames
 
-kwb2024raw <- clean_names(kwb2023raw)
+kwb2023raw <- clean_names(kwb2023raw)
 
 ## Check variables 
 
@@ -164,6 +165,7 @@ write_csv(
   "kwb2025_raw.csv")
 
 
+
 #ID variables ----
 
   #year      = jaar, 2020 t/m 2025
@@ -190,6 +192,7 @@ selected_vars <- c(
   "bev_dich",
   "a_inw")
   
+
 #Cleaning 2020 ----
 
 # Open csv raw 2020
@@ -224,19 +227,6 @@ kwb2020_selected$g_wozbag <- kwb2020_selected$g_wozbag * 1000
 # Save as clean 
 
 write_csv(kwb2020_selected, "kwb2020_clean.csv")
-
-  
-
-
-
-
-
-
-
-
-
-
-
 
 #Cleaning 2021 ----
 
@@ -412,3 +402,12 @@ kwb2025_selected$g_wozbag <- kwb2025_selected$g_wozbag * 1000
 # Save as clean 
 
 write_csv(kwb2025_selected, "kwb2025_clean.csv")
+
+
+
+
+# Grouping all clean datasets into one big dataset ----
+
+
+
+
