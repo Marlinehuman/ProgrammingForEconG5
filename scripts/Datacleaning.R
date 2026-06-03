@@ -164,8 +164,111 @@ write_csv(
   "kwb2025_raw.csv")
 
 
+#ID variables ----
 
-# Decide relevant variables regarding research objective ----
+  #year      = jaar, 2020 t/m 2025
+  #gm_naam   = gemeentenaam
+  #recs      = soort regio, dus Gemeente/Wijk/Buurt
+  #gwb_code  = gemeentecode
+
+#Other variables ----
+
+selected_vars <- c(
+  "year",
+  "gwb_code",
+  "gm_naam",
+  "recs",
+  "a_woning",
+  "a_hh",
+  "p_leegsw",
+  "g_wozbag",
+  "p_koopw",
+  "p_huurw",
+  "p_wcorpw",
+  "p_ov_hw",
+  "ste_mvs",
+  "bev_dich",
+  "a_inw")
+  
+#Cleaning 2020 ----
+
+# Open csv raw 2020
+
+kwb2020 <- read_csv("kwb2020_raw.csv",
+  na = c(".", "", "NA"),
+  show_col_types = FALSE)
+
+# Filter on municipality basis
+
+kwb2020_municipalities <- kwb2020[kwb2020$recs == "Gemeente", ]
+
+# Check if there are no double municipalities (through gwb_code)
+
+sum(duplicated(kwb2020_municipalities$gwb_code))
+
+# Add identifying year variable (2020)
+
+kwb2020_municipalities$year <- 2020
+
+# Filtering out unrelated variables
+
+available_vars <- selected_vars[selected_vars %in% names(kwb2020_municipalities)]
+kwb2020_selected <- kwb2020_municipalities[, available_vars]
+
+summary(kwb2020_selected)
+
+# Adjust g_wozbag to scale
+
+kwb2020_selected$g_wozbag <- kwb2020_selected$g_wozbag * 1000
+
+# Save as clean 
+
+write_csv(kwb2020_selected, "kwb2020_clean.csv")
+
+  
 
 
 
+
+
+
+
+
+
+
+
+
+#Cleaning 2021 ----
+
+# Open csv raw 2020
+
+kwb2020 <- read_csv("kwb2020_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+
+# Filter on municipality basis
+
+kwb2020_municipalities <- kwb2020[kwb2020$recs == "Gemeente", ]
+
+# Check if there are no double municipalities (through gwb_code)
+
+sum(duplicated(kwb2020_municipalities$gwb_code))
+
+# Add identifying year variable (2020)
+
+kwb2020_municipalities$year <- 2020
+
+# Filtering out unrelated variables
+
+available_vars <- selected_vars[selected_vars %in% names(kwb2020_municipalities)]
+kwb2020_selected <- kwb2020_municipalities[, available_vars]
+
+summary(kwb2020_selected)
+
+# Adjust g_wozbag to scale
+
+kwb2020_selected$g_wozbag <- kwb2020_selected$g_wozbag * 1000
+
+# Save as clean 
+
+write_csv(kwb2020_selected, "kwb2020_clean.csv") WIP
