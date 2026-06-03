@@ -57,6 +57,8 @@ By quantifying and visualizing how housing pressure and vacancy vary across Dutc
 
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
+The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis.
+
 library(readxl)\
 library(dplyr)\
 library(purrr)\
