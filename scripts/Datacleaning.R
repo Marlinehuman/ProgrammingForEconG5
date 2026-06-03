@@ -476,3 +476,5 @@ write.csv(
   "CLEANED_municipal_housing_2020_2025.csv"
 )
 
+mdf = read.csv("CLEANED_municipal_housing_2020_2025.csv")
+
