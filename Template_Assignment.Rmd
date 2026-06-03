@@ -1,5 +1,5 @@
 ---
-title: "development of housing pressure and residential vacancy in Amsterdam, Rotterdam and Utrecht between 2020 and 2025, and understanding coexistence and scarcity through price pressure, rental structure and urban density."
+title: "development of housing pressure and residential vacancy in Dutch municipalities between 2020 and 2025, and understanding coexistence and scarcity through price pressure, rental structure and urban density."
 author: "[Marline Human (2860665)], [Storm Bakker (2852941)], [Student (studentnummer)], [Student (studentnummer)] and [Jermaine Koreman (2866400)]."
 date: "`r Sys.Date()`"
 output: pdf_document
