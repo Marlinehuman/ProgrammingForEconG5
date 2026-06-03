@@ -35,7 +35,7 @@ Use APA referencing throughout your document. [Here's a link to some explanation
 
 The Dutch housing market is under unprecedented pressure. Across the Netherlands, rental prices have risen sharply, buying a home has become unaffordable for many households, and waiting lists for social housing continue to grow (CBS, 2025; Kences, 2025). At the same time, a paradox emerges: despite the apparent shortage, a significant number of dwellings remain unoccupied in many municipalities.
 
-This combination of housing pressure and vacancy creates a social problem that does not affect all of the Netherlands equally. In some municipalities, housing pressure is severe and vacancy is low; in others, vacancy rates are surprisingly high despite national shortages. This spatial variation means that the opportunity to find affordable housing increasingly depends on where one lives — a form of geographic inequality that affects young adults, lower-income households, and people seeking to relocate.
+This combination of housing pressure and vacancy creates a social problem that does not affect all of the Netherlands equally. In some municipalities, housing pressure is severe and vacancy is low; in others, vacancy rates are surprisingly high despite national shortages. This spatial variation means that the opportunity to find affordable housing increasingly depends on where one lives a form of geographic inequality that affects young adults, lower income households, and people seeking to relocate.
 
 ### Why is this relevant?
 
@@ -172,3 +172,9 @@ Provide the link to your PUBLIC repository here: ...
 ## 5.2 Reference list
 
 Use APA referencing throughout your document.
+
+Centraal Bureau voor de Statistiek. (2025). Kerncijfers wijken en buurten 2025 [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/> kerncijfers-wijken-en-buurten
+
+Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). Nationale Woon- en Bouwagenda. Rijksoverheid. <https://www.rijksoverheid.nl/>
+
+Planbureau voor de Leefomgeving. (2024). Ruimtelijke verkenning 2024. PBL. <https://www.pbl.nl/>
