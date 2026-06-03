@@ -35,7 +35,7 @@ Use APA referencing throughout your document. [Here's a link to some explanation
 
 The Dutch housing market is under unprecedented pressure. Across the Netherlands, rental prices have risen sharply, buying a home has become unaffordable for many households, and waiting lists for social housing continue to grow (CBS, 2025; Kences, 2025). At the same time, a paradox emerges: despite the apparent shortage, a significant number of dwellings remain unoccupied in many municipalities.
 
-This combination of housing pressure and vacancy creates a social problem that does not affect all of the Netherlands equally. In some municipalities, housing pressure is severe and vacancy is low; in others, vacancy rates are surprisingly high despite national shortages. This spatial variation means that the opportunity to find affordable housing increasingly depends on where one lives — a form of geographic inequality that affects young adults, lower-income households, and people seeking to relocate.
+This combination of housing pressure and vacancy creates a social problem that does not affect all of the Netherlands equally. In some municipalities, housing pressure is severe and vacancy is low; in others, vacancy rates are surprisingly high despite national shortages. This spatial variation means that the opportunity to find affordable housing increasingly depends on where one lives a form of geographic inequality that affects young adults, lower income households, and people seeking to relocate.
 
 ### Why is this relevant?
 
@@ -45,7 +45,7 @@ This problem is relevant for several reasons:
 
 **2. Social relevance.** Access to affordable housing is widely considered a basic right. When access depends heavily on geography, spatial inequality deepens and social cohesion is undermined. The coexistence of shortage and vacancy raises difficult questions about the efficiency and fairness of the housing system.
 
-**3. Policy relevance.** Understanding where housing pressure is most severe — and where it coincides with vacancy — helps policymakers target interventions more effectively. A municipality-level analysis can inform decisions about new construction, rent regulation, and vacancy policies, and shows which areas need attention most urgently.
+**3. Policy relevance.** Understanding where housing pressure is most severe and where it coincides with vacancy helps policymakers target interventions more effectively. A municipality-level analysis can inform decisions about new construction, rent regulation, and vacancy policies, and shows which areas need attention most urgently.
 
 **4. Personal relevance.** As students at VU Amsterdam, we experience the consequences of housing pressure directly. By analyzing the problem at a national scale, we move beyond our own situation and investigate the structural forces shaping housing access across the Netherlands.
 
@@ -78,7 +78,7 @@ dataset <- midwest
 
 midwest is an example dataset included in the tidyverse package
 
-## 2.2 Provide a short summary of the dataset(s)
+## 2.2 Provide a short summary of the datasets
 
 ```{r}
 head(dataset)
@@ -99,6 +99,7 @@ Think of things like:
 - Do the variables contain health information or SES information?
 
 - Have they been measured by interviewing individuals or is the data coming from administrative sources?
+- *Have they been measured by interviewing individuals or is the data coming from administrative sources?* The data used is official government data, and is collected through a combination of existing government registries, municipal administrative data, and spatial mapping.
 
 *For the sake of this example, I will continue with the assignment...*
 
@@ -187,3 +188,9 @@ Provide the link to your PUBLIC repository here: ...
 ## 5.2 Reference list
 
 Use APA referencing throughout your document.
+
+Centraal Bureau voor de Statistiek. (2025). Kerncijfers wijken en buurten 2025 [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/> kerncijfers-wijken-en-buurten
+
+Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). Nationale Woon- en Bouwagenda. Rijksoverheid. <https://www.rijksoverheid.nl/>
+
+Planbureau voor de Leefomgeving. (2024). Ruimtelijke verkenning 2024. PBL. <https://www.pbl.nl/>
