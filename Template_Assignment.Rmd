@@ -57,6 +57,21 @@ By quantifying and visualizing how housing pressure and vacancy vary across Dutc
 
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
+library(readxl)\
+library(dplyr)\
+library(purrr)\
+\
+files \<- list.files(\
+"data/raw",\
+pattern = "\^kwb-20(20\|21\|22\|23\|24\|25)\\\\.xlsx\$",\
+full.names = TRUE\
+)
+
+\
+dataset \<- files \|\>\
+map(read_excel) \|\>\
+bind_rows()
+
 ```{r loading_data}
 dataset <- midwest
 ```
