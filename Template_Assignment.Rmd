@@ -81,9 +81,8 @@ These are things that are usually included in the metadata of the dataset. For y
 
 Think of things like:
 
-- Do the variables contain health information or SES information?
+- *Do the variables contain health information or SES information?*
 
-- Have they been measured by interviewing individuals or is the data coming from administrative sources?
 - *Have they been measured by interviewing individuals or is the data coming from administrative sources?* The data used is official government data, and is collected through a combination of existing government registries, municipal administrative data, and spatial mapping.
 
 *For the sake of this example, I will continue with the assignment...*
