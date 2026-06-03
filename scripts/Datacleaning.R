@@ -403,11 +403,76 @@ kwb2025_selected$g_wozbag <- kwb2025_selected$g_wozbag * 1000
 
 write_csv(kwb2025_selected, "kwb2025_clean.csv")
 
-
-
-
 # Grouping all clean datasets into one big dataset ----
 
+# Loading clean sets into R
+
+kwb2020_clean <- read.csv("kwb2020_clean.csv")
+kwb2021_clean <- read.csv("kwb2021_clean.csv")
+kwb2022_clean <- read.csv("kwb2022_clean.csv")
+kwb2023_clean <- read.csv("kwb2023_clean.csv")
+kwb2024_clean <- read.csv("kwb2024_clean.csv")
+kwb2025_clean <- read.csv("kwb2025_clean.csv")
+
+# Combine all years into one final dataset
+
+municipal_housing <- rbind(
+  kwb2020_clean,
+  kwb2021_clean,
+  kwb2022_clean,
+  kwb2023_clean,
+  kwb2024_clean,
+  kwb2025_clean
+)
+
+# Control steps
+
+View(municipal_housing)
+table(municipal_housing$year)
+sum(duplicated(paste(municipal_housing$year, municipal_housing$gwb_code)))
+colSums(is.na(municipal_housing))
+
+# Create extra variables
+
+#housing_pressure = households / houses
+#effective_housing_stock = houses corrected for vacancy
+#vacancy_adjusted_pressure = housing pressure after vacancy correction
+#rental_vulnerability =  rental minus corporation houses
+#paradox_index = housing pressure with vacancy
+#urbanity_label = urbanity labels based on ste_mvs
+#national_median_woz = median WOZ value of all municipalities across all years
+#price_pressure = municipality WOZ value compared to the national median WOZ value
+#price_pressure above 1 = municipality has above-median WOZ value
+#price_pressure below 1 = municipality has below-median WOZ value
 
 
+municipal_housing$housing_pressure <- municipal_housing$a_hh / municipal_housing$a_woning
+
+municipal_housing$effective_housing_stock <- municipal_housing$a_woning * (1 - municipal_housing$p_leegsw / 100)
+
+municipal_housing$vacancy_adjusted_pressure <- municipal_housing$a_hh / municipal_housing$effective_housing_stock
+
+municipal_housing$rental_vulnerability <- municipal_housing$p_huurw - municipal_housing$p_wcorpw
+
+municipal_housing$paradox_index <- municipal_housing$housing_pressure * municipal_housing$p_leegsw
+
+municipal_housing$urbanity_label <- NA
+
+municipal_housing$urbanity_label[municipal_housing$ste_mvs == 1] <- "Very strongly urban"
+municipal_housing$urbanity_label[municipal_housing$ste_mvs == 2] <- "Strongly urban"
+municipal_housing$urbanity_label[municipal_housing$ste_mvs == 3] <- "Moderately urban"
+municipal_housing$urbanity_label[municipal_housing$ste_mvs == 4] <- "Slightly urban"
+municipal_housing$urbanity_label[municipal_housing$ste_mvs == 5] <- "Non-urban"
+
+national_median_woz <- median(municipal_housing$g_wozbag, na.rm = TRUE)
+
+municipal_housing$price_pressure <- municipal_housing$g_wozbag / national_median_woz
+
+
+# Save final clean analysis dataset ----
+
+write.csv(
+  municipal_housing,
+  "CLEANED_municipal_housing_2020_2025.csv"
+)
 
