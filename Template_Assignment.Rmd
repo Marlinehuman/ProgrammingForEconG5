@@ -1,6 +1,6 @@
 ---
 title: "development of housing pressure and residential vacancy in Dutch municipalities between 2020 and 2025, and understanding coexistence and scarcity through price pressure, rental structure and urban density."
-author: "[Marline Human (2860665)], [Storm Bakker (2852941)], [Student (studentnummer)], [Student (studentnummer)] and [Jermaine Koreman (2866400)]."
+author: "[Marline Human (2860665)], [Storm Bakker (2852941)], [Nando Fredricks (2888962)], [Student (studentnummer)] and [Jermaine Koreman (2866400)]."
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
@@ -33,11 +33,23 @@ Use APA referencing throughout your document. [Here's a link to some explanation
 
 ## 1.1 Describe the Social Problem
 
-Include the following:
+The Dutch housing market is under unprecedented pressure. Across the Netherlands, rental prices have risen sharply, buying a home has become unaffordable for many households, and waiting lists for social housing continue to grow (CBS, 2025; Kences, 2025). At the same time, a paradox emerges: despite the apparent shortage, a significant number of dwellings remain unoccupied in many municipalities.
 
-- Why is this relevant?
+This combination of housing pressure and vacancy creates a social problem that does not affect all of the Netherlands equally. In some municipalities, housing pressure is severe and vacancy is low; in others, vacancy rates are surprisingly high despite national shortages. This spatial variation means that the opportunity to find affordable housing increasingly depends on where one lives a form of geographic inequality that affects young adults, lower income households, and people seeking to relocate.
 
-- ...
+### Why is this relevant?
+
+This problem is relevant for several reasons:
+
+**1. Economic relevance.** The housing market is a cornerstone of the economy. Rising housing costs reduce disposable income, limit labor mobility, and contribute to wealth inequality between homeowners and renters (CBS, 2025). Geographic differences in housing pressure also shape patterns of regional economic development.
+
+**2. Social relevance.** Access to affordable housing is widely considered a basic right. When access depends heavily on geography, spatial inequality deepens and social cohesion is undermined. The coexistence of shortage and vacancy raises difficult questions about the efficiency and fairness of the housing system.
+
+**3. Policy relevance.** Understanding where housing pressure is most severe and where it coincides with vacancy helps policymakers target interventions more effectively. A municipality-level analysis can inform decisions about new construction, rent regulation, and vacancy policies, and shows which areas need attention most urgently.
+
+**4. Personal relevance.** As students at VU Amsterdam, we experience the consequences of housing pressure directly. By analyzing the problem at a national scale, we move beyond our own situation and investigate the structural forces shaping housing access across the Netherlands.
+
+By quantifying and visualizing how housing pressure and vacancy vary across Dutch municipalities between 2020 and 2025, this project aims to make the scale and distribution of the problem visible, and to identify which types of municipalities face the sharpest paradox between scarcity and unused capacity.
 
 # Part 2 - Data Sourcing
 
@@ -45,13 +57,30 @@ Include the following:
 
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
+The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis.
+
+library(readxl)\
+library(dplyr)\
+library(purrr)\
+\
+files \<- list.files(\
+"data/raw",\
+pattern = "\^kwb-20(20\|21\|22\|23\|24\|25)\\\\.xlsx\$",\
+full.names = TRUE\
+)
+
+\
+dataset \<- files \|\>\
+map(read_excel) \|\>\
+bind_rows()
+
 ```{r loading_data}
 dataset <- midwest
 ```
 
 midwest is an example dataset included in the tidyverse package
 
-## 2.2 Provide a short summary of the dataset(s)
+## 2.2 Provide a short summary of the datasets
 
 ```{r}
 head(dataset)
@@ -65,13 +94,21 @@ inline_code = TRUE
 
 These are things that are usually included in the metadata of the dataset. For your project, you need to provide us with the information from your metadata that we need to understand your dataset of choice.
 
+This dataset comes from CBS and contains information about Dutch municipalities for the years 2020 to 2025. It includes data on topics such as population, housing, income, and households.
+
+For our project, we mainly use the housing-related information. The dataset contains variables that can help us study housing pressure and vacancy across municipalities. Because the data cover multiple years, it is possible to see whether these patterns have changed over time.
+
+The exact meaning and units of the variables differ and are explained in the CBS metadata that accompany the dataset.
+
+`glimpse(dataset)`
+
 ## 2.3 Describe the type of variables included
 
 Think of things like:
 
-- Do the variables contain health information or SES information?
+- *Do the variables contain health information or SES information?*
 
-- Have they been measured by interviewing individuals or is the data coming from administrative sources?
+- *Have they been measured by interviewing individuals or is the data coming from administrative sources?* The data used is official government data, and is collected through a combination of existing government registries, municipal administrative data, and spatial mapping.
 
 *For the sake of this example, I will continue with the assignment...*
 
@@ -160,3 +197,9 @@ Provide the link to your PUBLIC repository here: ...
 ## 5.2 Reference list
 
 Use APA referencing throughout your document.
+
+Centraal Bureau voor de Statistiek. (2025). Kerncijfers wijken en buurten 2025 [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/> kerncijfers-wijken-en-buurten
+
+Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). Nationale Woon- en Bouwagenda. Rijksoverheid. <https://www.rijksoverheid.nl/>
+
+Planbureau voor de Leefomgeving. (2024). Ruimtelijke verkenning 2024. PBL. <https://www.pbl.nl/>
