@@ -127,7 +127,175 @@ Say we want to include only larger distances (above 2) in our dataset, we can fi
 mean(dataset$percollege)
 ```
 
-Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
+```{r open_raw_2020}
+code
+```
+
+```{r filter_municipalities_2020}
+code
+```
+
+```{r check_for_duplicate_municipalities_2020}
+code
+```
+
+```{r add_year_variable_2020}
+code
+```
+
+```{r remove_excess_variables_2020}
+code
+```
+
+```{r set_wozbag_to_scale_2020}
+code
+```
+
+```{r save_as_clean_2020}
+code
+```
+
+```{r open_raw_2021}
+code
+```
+
+```{r filter_municipalities_2021}
+code
+```
+
+```{r check_for_duplicate_municipalities_2021}
+code
+```
+
+```{r add_year_variable_2021}
+code
+```
+
+```{r remove_excess_variables_2021}
+code
+```
+
+```{r set_wozbag_to_scale_2021}
+code
+```
+
+```{r save_as_clean_2021}
+code
+```
+
+```{r open_raw_2022}
+code
+```
+
+```{r filter_municipalities_2022}
+code
+```
+
+```{r check_for_duplicate_municipalities_2022}
+code
+```
+
+```{r add_year_variable_2022}
+code
+```
+
+```{r remove_excess_variables_2022}
+code
+```
+
+```{r set_wozbag_to_scale_2022}
+code
+```
+
+```{r save_as_clean_2022}
+code
+```
+
+```{r open_raw_2023}
+code
+```
+
+```{r filter_municipalities_2023}
+code
+```
+
+```{r check_for_duplicate_municipalities_2023}
+code
+```
+
+```{r add_year_variable_2023}
+code
+```
+
+```{r remove_excess_variables_2023}
+code
+```
+
+```{r set_wozbag_to_scale_2023}
+code
+```
+
+```{r save_as_clean_2023}
+code
+```
+
+```{r open_raw_2024}
+code
+```
+
+```{r filter_municipalities_2024}
+code
+```
+
+```{r check_for_duplicate_municipalities_2024}
+code
+```
+
+```{r add_year_variable_2024}
+code
+```
+
+```{r remove_excess_variables_2024}
+code
+```
+
+```{r set_wozbag_to_scale_2024}
+code
+```
+
+```{r save_as_clean_2024}
+code
+```
+
+```{r open_raw_2025}
+code
+```
+
+```{r filter_municipalities_2025}
+code
+```
+
+```{r check_for_duplicate_municipalities_2025}
+code
+```
+
+```{r add_year_variable_2025}
+code
+```
+
+```{r remove_excess_variables_2025}
+code
+```
+
+```{r set_wozbag_to_scale_2025}
+code
+```
+
+```{r save_as_clean_2025}
+code
+```
+
+please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
 
 ## 3.2 Generate necessary variables
 
