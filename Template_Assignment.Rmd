@@ -330,8 +330,49 @@ The paradox index combines housing pressure with vacancy to capture the central 
 ## 3.3 Visualize temporal variation
 
 ```{r}
+library(patchwork)
 
+# Trend housing pressure
+p1 <- mdf %>%
+  group_by(year) %>%
+  summarise(avg = mean(housing_pressure, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = avg)) +
+  geom_line(linewidth = 1.2, color = "steelblue") +
+  geom_point(size = 3, color = "steelblue") +
+  labs(
+    title = "Housing pressure",
+    x = "Year",
+    y = "Average value"
+  ) +
+  theme_minimal()
+
+# Trend paradox index
+p2 <- mdf %>%
+  group_by(year) %>%
+  summarise(avg = mean(paradox_index, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = avg)) +
+  geom_line(linewidth = 1.2, color = "darkred") +
+  geom_point(size = 3, color = "darkred") +
+  labs(
+    title = "Paradox index",
+    x = "Year",
+    y = "Average value"
+  ) +
+  theme_minimal()
+
+# Beide grafieken naast elkaar
+p1 + p2 + 
+  plot_annotation(
+    title = "Trends in Dutch municipalities, 2020-2025",
+    subtitle = "Housing pressure and paradox index over time"
+  )
 ```
+
+This figure shows the evolution of housing pressure and the paradox index across Dutch municipalities between 2020 and 2025. Each indicator is shown on its own scale to make changes over time visible.
+
+Housing pressure (left panel) shows a clear upward trend: the average ratio of households to dwellings increased from approximately 0.990 in 2021 to 0.998 in 2024, before slightly decreasing in 2025. This pattern suggests that demand for housing has been rising faster than supply.
+
+The paradox index (right panel) shows a more complex pattern: a sharp decline between 2020 and 2022, followed by a steady rise. The 2022 turning point may reflect post-pandemic housing market shifts, such as rising interest rates and changes in rental market policy. The resurgence of the paradox index in recent years suggests that shortage and vacancy are increasingly occurring side by side.
 
 ## 3.4 Visualize spatial variation
 
