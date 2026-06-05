@@ -302,14 +302,30 @@ please use a separate 'R block' of code for each type of cleaning. So, e.g. one 
 Variable 1
 
 ```{r gen_var1}
+# Variable 1: Housing Pressure
+# Measures the ratio of households to dwellings per municipality
+mdf <- mdf %>%
+  mutate(housing_pressure = a_hh / a_woning)
+
+summary(mdf$housing_pressure)
 
 ```
+
+Housing pressure measures the ratio of households to dwellings in each municipality. A value above 1 indicates that there are more households than available dwellings, suggesting that demand exceeds supply.
 
 Variable 2
 
 ```{r gen_var2}
+# Variable 2: Paradox Index
+# Combines housing pressure and vacancy to identify municipalities 
+# where shortage and unused capacity coexist
+mdf <- mdf %>%
+  mutate(paradox_index = housing_pressure * p_leegsw)
 
+summary(mdf$paradox_index)
 ```
+
+The paradox index combines housing pressure with vacancy to capture the central puzzle of our research: how can shortage and vacancy coexist? A high paradox index identifies municipalities with both high pressure and high vacancy — the exact contradiction this project seeks to explain. Multiplying both values gives weight to municipalities where both problems occur simultaneously.
 
 ## 3.3 Visualize temporal variation
 
