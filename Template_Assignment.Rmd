@@ -68,17 +68,16 @@ library(purrr)
 ```
 
 ```{r}
-files <- list.files("data/raw", pattern = "^kwb-20(20|21|22|23|24|25)\\.xlsx$", full.names = TRUE) 
+files <- list.files("data/raw", pattern = "^kwb-20(20|21|22|23|24|25)\\.xlsx$", full.names = TRUE) 
 ```
 
 ```{r reading excel}
-dataset <- files |>
+dataset <- files |>
 
 map(read_excel) |>
 
 bind_rows()
 ```
-
 
 ## 2.2 Provide a short summary of the datasets
 
