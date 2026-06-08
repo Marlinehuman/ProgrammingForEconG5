@@ -361,6 +361,7 @@ mdf <- mdf %>%
   mutate(paradox_index = housing_pressure * p_leegsw)
 
 summary(mdf$paradox_index)
+mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
 ```
 
 The paradox index combines housing pressure with vacancy to capture the central puzzle of our research: how can shortage and vacancy coexist? A high paradox index identifies municipalities with both high pressure and high vacancy — the exact contradiction this project seeks to explain. Multiplying both values gives weight to municipalities where both problems occur simultaneously.
