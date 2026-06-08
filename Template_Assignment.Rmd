@@ -375,7 +375,7 @@ p1 <- mdf %>%
   labs(
     title = "Housing pressure",
     x = "Year",
-    y = "Average value"
+    y = "Average housing pressure\n(households / dwellings)"
   ) +
   theme_minimal()
 
@@ -389,12 +389,12 @@ p2 <- mdf %>%
   labs(
     title = "Paradox index",
     x = "Year",
-    y = "Average value"
+    y = "Average paradox index"
   ) +
   theme_minimal()
 
 # Beide grafieken naast elkaar
-p1 + p2 + 
+p1 + p2 +
   plot_annotation(
     title = "Trends in Dutch municipalities, 2020-2025",
     subtitle = "Housing pressure and paradox index over time"
@@ -451,26 +451,28 @@ ggplot(nl_map_data) +
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+avHere you provide a description of why the plot above is relevant to your specific social problem.
 
 ## 3.5 Visualize sub-population variation
 
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
-dataset$inmetro <- dataset$inmetro %>% as.factor()
-# Boxplot of poverty rate by state using the 'midwest' dataset
-ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
+# Boxplot: housing pressure per urbanity group
+mdf %>%
+  mutate(urbanity_label = as.factor(urbanity_label)) %>%
+  ggplot(aes(x = urbanity_label, y = housing_pressure, 
+             fill = urbanity_label)) +
   geom_boxplot() +
   labs(
-    title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
-    x = "Metropolitan Area",
-    y = "Poverty Rate of Adults (%)"
+    title = "Housing pressure by urbanity level",
+    subtitle = "Distribution across Dutch municipalities (2020–2025)",
+    x = "Urbanity level",
+    y = "Housing pressure (households / dwellings)",
+    caption = "Source: CBS Kerncijfers Wijken en Buurten"
   ) +
   theme_minimal() +
-  theme(
-    legend.position = "right"
-  )
+  theme(legend.position = "none")
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
