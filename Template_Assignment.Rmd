@@ -79,7 +79,6 @@ map(read_excel) |>
 bind_rows()
 ```
 
-
 ## 2.2 Provide a short summary of the datasets
 
 ```{r}
