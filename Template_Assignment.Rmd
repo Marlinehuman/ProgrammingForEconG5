@@ -13,6 +13,9 @@ install.packages("yaml")
 install.packages("rmarkdown")
 install.packages("ggplot2")
 install.packages("sf")
+install.packages("patchwork")
+install.packages("cbsodataR")
+install.packages("scales")
 ```
 
 ```{r packages}
@@ -21,6 +24,9 @@ require(rmarkdown)
 require(yaml)
 require(ggplot2)
 require(sf)
+require(patchwork)
+require(cbsodataR)
+require(scales)
 ```
 
 # Title Page
