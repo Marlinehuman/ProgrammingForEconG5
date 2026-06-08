@@ -79,11 +79,6 @@ map(read_excel) |>
 bind_rows()
 ```
 
-```{r loading_data}
-dataset <- midwest
-```
-
-midwest is an example dataset included in the tidyverse package
 
 ## 2.2 Provide a short summary of the datasets
 
