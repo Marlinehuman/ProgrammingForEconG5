@@ -377,7 +377,45 @@ The paradox index (right panel) shows a more complex pattern: a sharp decline be
 ## 3.4 Visualize spatial variation
 
 ```{r visualise_map}
+# Stap 1: packages laden
+library(sf)
+library(cbsodataR)
+library(dplyr)
+library(ggplot2)
+library(scales)
 
+# Stap 2: shapefile ophalen van CBS
+nl_map <- cbs_get_sf("gemeente", year = 2023)
+
+# Stap 3: data samenvatten per gemeente
+map_data <- mdf |>
+  group_by(gm_naam) |>
+  summarise(avg_paradox = mean(paradox_index, na.rm = TRUE))
+
+# Stap 4: samenvoegen met shapefile
+nl_map_data <- nl_map |>
+  left_join(map_data, by = c("statnaam" = "gm_naam"))
+
+# Stap 5: kaart plotten
+ggplot(nl_map_data) +
+  geom_sf(aes(fill = avg_paradox), colour = "white", linewidth = 0.1) +
+  scale_fill_viridis_c(
+    option = "plasma",
+    name = "Paradox index",
+    limits = c(0, 10),
+    oob = scales::squish
+  ) +
+  labs(
+    title = "Spatial variation in the housing paradox",
+    subtitle = "Average paradox index per Dutch municipality (2020–2025)",
+    caption = "Source: CBS Kerncijfers Wijken en Buurten"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(size = 13, face = "bold"),
+    plot.subtitle = element_text(size = 10)
+  )
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
