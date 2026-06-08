@@ -427,12 +427,12 @@ nl_map <- cbs_get_sf("gemeente", year = 2023)
 
 # Stap 3: data samenvatten per gemeente
 map_data <- mdf |>
-  group_by(gm_naam) |>
+  group_by(municipality_name) |>
   summarise(avg_paradox = mean(paradox_index, na.rm = TRUE))
 
 # Stap 4: samenvoegen met shapefile
 nl_map_data <- nl_map |>
-  left_join(map_data, by = c("statnaam" = "gm_naam"))
+  left_join(map_data, by = c("statnaam" = "municipality_name"))
 
 # Stap 5: kaart plotten
 ggplot(nl_map_data) +
