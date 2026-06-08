@@ -469,7 +469,7 @@ national_median_woz <- median(municipal_housing$g_wozbag, na.rm = TRUE)
 municipal_housing$price_pressure <- municipal_housing$g_wozbag / national_median_woz
 
 
-# Save final clean analysis dataset ----
+# Save clean analysis dataset ----
 
 write.csv(
   municipal_housing,
@@ -477,4 +477,46 @@ write.csv(
 )
 
 mdf = read.csv("CLEANED_municipal_housing_2020_2025.csv")
+
+# Renaming variables ----
+
+# ID Variables
+
+names(mdf)[names(mdf) == "gwb_code"] <- "municipality_code"
+names(mdf)[names(mdf) == "gm_naam"] <- "municipality_name"
+names(mdf)[names(mdf) == "recs"] <- "region_type"
+
+# Original Housing Variables
+
+names(mdf)[names(mdf) == "a_woning"] <- "housing_stock"
+names(mdf)[names(mdf) == "a_hh"] <- "households"
+names(mdf)[names(mdf) == "a_inw"] <- "population"
+
+# Vacancy and Price Variables
+
+names(mdf)[names(mdf) == "p_leegsw"] <- "vacancy_rate_percent"
+names(mdf)[names(mdf) == "g_wozbag"] <- "average_woz_value_eur"
+
+# Ownership and Rental Structure Variables
+
+names(mdf)[names(mdf) == "p_koopw"] <- "owner_occupied_share_percent"
+names(mdf)[names(mdf) == "p_huurw"] <- "rental_share_percent"
+names(mdf)[names(mdf) == "p_wcorpw"] <- "corporation_owned_share_percent"
+names(mdf)[names(mdf) == "p_ov_hw"] <- "private_rental_share_percent"
+
+# Urban density variables
+
+names(mdf)[names(mdf) == "ste_mvs"] <- "urbanity_code"
+names(mdf)[names(mdf) == "bev_dich"] <- "population_density"
+
+# Check new names
+
+names(mdf)
+
+# Save dataset with clearer variable names ----
+
+write_csv(
+  mdf,
+  "CLEANED_municipal_housing_2020_2025.csv"
+)
 
