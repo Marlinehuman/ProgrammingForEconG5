@@ -79,11 +79,6 @@ map(read_excel) |>
 bind_rows()
 ```
 
-```{r loading_data}
-dataset <- midwest
-```
-
-midwest is an example dataset included in the tidyverse package
 
 ## 2.2 Provide a short summary of the datasets
 
@@ -463,19 +458,21 @@ avHere you provide a description of why the plot above is relevant to your speci
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
-dataset$inmetro <- dataset$inmetro %>% as.factor()
-# Boxplot of poverty rate by state using the 'midwest' dataset
-ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
+# Boxplot: housing pressure per urbanity group
+mdf %>%
+  mutate(urbanity_label = as.factor(urbanity_label)) %>%
+  ggplot(aes(x = urbanity_label, y = housing_pressure, 
+             fill = urbanity_label)) +
   geom_boxplot() +
   labs(
-    title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
-    x = "Metropolitan Area",
-    y = "Poverty Rate of Adults (%)"
+    title = "Housing pressure by urbanity level",
+    subtitle = "Distribution across Dutch municipalities (2020–2025)",
+    x = "Urbanity level",
+    y = "Housing pressure (households / dwellings)",
+    caption = "Source: CBS Kerncijfers Wijken en Buurten"
   ) +
   theme_minimal() +
-  theme(
-    legend.position = "right"
-  )
+  theme(legend.position = "none")
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
@@ -485,7 +482,42 @@ Here you provide a description of why the plot above is relevant to your specifi
 Analyze the relationship between two variables.
 
 ```{r analysis}
-
+mdf %>%
+  group_by(year) %>%
+  summarise(avg_paradox = mean(paradox_index, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = avg_paradox)) +
+  
+  # Gekleurde achtergrond voor/na
+  annotate("rect", xmin = 2019.5, xmax = 2022, 
+           ymin = -Inf, ymax = Inf,
+           fill = "steelblue", alpha = 0.1) +
+  annotate("rect", xmin = 2022, xmax = 2025.5,
+           ymin = -Inf, ymax = Inf,
+           fill = "darkred", alpha = 0.1) +
+  
+  # Één doorlopende lijn
+  geom_line(linewidth = 1.2, colour = "black") +
+  geom_point(size = 3, colour = "black") +
+  
+  # Verticale lijn + label
+  geom_vline(xintercept = 2022, linetype = "dashed", linewidth = 0.8) +
+  annotate("text", x = 2022.1, y = 4.28, 
+           label = "ECB rate hike (2022)", hjust = 0, size = 3.5) +
+  
+  # Labels voor periodes
+  annotate("text", x = 2021, y = 4.115, 
+           label = "Before", colour = "steelblue", size = 3.5) +
+  annotate("text", x = 2023.5, y = 4.115, 
+           label = "After", colour = "darkred", size = 3.5) +
+  
+  labs(
+    title = "Housing paradox before and after 2022",
+    subtitle = "Average paradox index per year across Dutch municipalities",
+    x = "Year",
+    y = "Average paradox index",
+    caption = "Source: CBS Kerncijfers Wijken en Buurten"
+  ) +
+  theme_minimal()
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
