@@ -11,12 +11,14 @@ output: pdf_document
 install.packages("tidyverse")
 install.packages("yaml")
 install.packages("rmarkdown")
+install.packages("ggplot2")
 ```
 
 ```{r packages}
 require(tidyverse)
 require(rmarkdown)
 require(yaml)
+require(ggplot2)
 ```
 
 # Title Page
@@ -65,6 +67,8 @@ library(readxl)
 library(dplyr)
 
 library(purrr)
+
+library(ggplot2)
 ```
 
 ```{r}
