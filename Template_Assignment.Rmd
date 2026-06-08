@@ -487,7 +487,42 @@ Here you provide a description of why the plot above is relevant to your specifi
 Analyze the relationship between two variables.
 
 ```{r analysis}
-
+mdf %>%
+  group_by(year) %>%
+  summarise(avg_paradox = mean(paradox_index, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = avg_paradox)) +
+  
+  # Gekleurde achtergrond voor/na
+  annotate("rect", xmin = 2019.5, xmax = 2022, 
+           ymin = -Inf, ymax = Inf,
+           fill = "steelblue", alpha = 0.1) +
+  annotate("rect", xmin = 2022, xmax = 2025.5,
+           ymin = -Inf, ymax = Inf,
+           fill = "darkred", alpha = 0.1) +
+  
+  # Één doorlopende lijn
+  geom_line(linewidth = 1.2, colour = "black") +
+  geom_point(size = 3, colour = "black") +
+  
+  # Verticale lijn + label
+  geom_vline(xintercept = 2022, linetype = "dashed", linewidth = 0.8) +
+  annotate("text", x = 2022.1, y = 4.28, 
+           label = "ECB rate hike (2022)", hjust = 0, size = 3.5) +
+  
+  # Labels voor periodes
+  annotate("text", x = 2021, y = 4.115, 
+           label = "Before", colour = "steelblue", size = 3.5) +
+  annotate("text", x = 2023.5, y = 4.115, 
+           label = "After", colour = "darkred", size = 3.5) +
+  
+  labs(
+    title = "Housing paradox before and after 2022",
+    subtitle = "Average paradox index per year across Dutch municipalities",
+    x = "Year",
+    y = "Average paradox index",
+    caption = "Source: CBS Kerncijfers Wijken en Buurten"
+  ) +
+  theme_minimal()
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
