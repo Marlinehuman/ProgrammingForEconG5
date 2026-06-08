@@ -123,176 +123,214 @@ Think of things like:
 
 Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
 
-```{r data_cleaning}
-mean(dataset$percollege)
-```
+**2020**
 
 ```{r open_raw_2020}
-code
+kwb2020 <- read_csv("kwb2020_raw.csv",
+  na = c(".", "", "NA"),
+  show_col_types = FALSE)
 ```
 
 ```{r filter_municipalities_2020}
-code
+kwb2020_municipalities <- kwb2020[kwb2020$recs == "Gemeente", ]
 ```
 
 ```{r check_for_duplicate_municipalities_2020}
-code
+sum(duplicated(kwb2020_municipalities$gwb_code))
 ```
 
 ```{r add_year_variable_2020}
-code
+kwb2020_municipalities$year <- 2020
 ```
 
 ```{r remove_excess_variables_2020}
-code
+available_vars <- selected_vars[selected_vars %in% names(kwb2020_municipalities)]
+kwb2020_selected <- kwb2020_municipalities[, available_vars]
+
+summary(kwb2020_selected)
 ```
 
 ```{r set_wozbag_to_scale_2020}
-code
+kwb2020_selected$g_wozbag <- kwb2020_selected$g_wozbag * 1000
 ```
 
 ```{r save_as_clean_2020}
-code
+write_csv(kwb2020_selected, "kwb2020_clean.csv")
 ```
 
+**2021**
+
 ```{r open_raw_2021}
-code
+kwb2021 <- read_csv("kwb2021_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
 ```
 
 ```{r filter_municipalities_2021}
-code
+kwb2021_municipalities <- kwb2021[kwb2021$recs == "Gemeente", ]
 ```
 
 ```{r check_for_duplicate_municipalities_2021}
-code
+sum(duplicated(kwb2021_municipalities$gwb_code))
 ```
 
 ```{r add_year_variable_2021}
-code
+kwb2021_municipalities$year <- 2021
 ```
 
 ```{r remove_excess_variables_2021}
-code
+available_vars <- selected_vars[selected_vars %in% names(kwb2021_municipalities)]
+kwb2021_selected <- kwb2021_municipalities[, available_vars]
+
+summary(kwb2021_selected)
 ```
 
 ```{r set_wozbag_to_scale_2021}
-code
+kwb2021_selected$g_wozbag <- kwb2021_selected$g_wozbag * 1000
 ```
 
 ```{r save_as_clean_2021}
-code
+write_csv(kwb2021_selected, "kwb2021_clean.csv") 
 ```
 
+**2022**
+
 ```{r open_raw_2022}
-code
+kwb2022 <- read_csv("kwb2022_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
 ```
 
 ```{r filter_municipalities_2022}
-code
+kwb2022_municipalities <- kwb2022[kwb2022$recs == "Gemeente", ]
 ```
 
 ```{r check_for_duplicate_municipalities_2022}
-code
+sum(duplicated(kwb2022_municipalities$gwb_code))
 ```
 
 ```{r add_year_variable_2022}
-code
+kwb2022_municipalities$year <- 2022
 ```
 
 ```{r remove_excess_variables_2022}
-code
+available_vars <- selected_vars[selected_vars %in% names(kwb2022_municipalities)]
+kwb2022_selected <- kwb2022_municipalities[, available_vars]
+
+summary(kwb2022_selected)
 ```
 
 ```{r set_wozbag_to_scale_2022}
-code
+kwb2022_selected$g_wozbag <- kwb2022_selected$g_wozbag * 1000
 ```
 
 ```{r save_as_clean_2022}
-code
+write_csv(kwb2022_selected, "kwb2022_clean.csv")
 ```
 
+**2023**
+
 ```{r open_raw_2023}
-code
+kwb2023 <- read_csv("kwb2023_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
 ```
 
 ```{r filter_municipalities_2023}
-code
+kwb2023_municipalities <- kwb2023[kwb2023$recs == "Gemeente", ]
 ```
 
 ```{r check_for_duplicate_municipalities_2023}
-code
+sum(duplicated(kwb2023_municipalities$gwb_code))
 ```
 
 ```{r add_year_variable_2023}
-code
+kwb2023_municipalities$year <- 2023
 ```
 
 ```{r remove_excess_variables_2023}
-code
+available_vars <- selected_vars[selected_vars %in% names(kwb2023_municipalities)]
+kwb2023_selected <- kwb2023_municipalities[, available_vars]
+
+summary(kwb2023_selected)
 ```
 
 ```{r set_wozbag_to_scale_2023}
-code
+kwb2023_selected$g_wozbag <- kwb2023_selected$g_wozbag * 1000
 ```
 
 ```{r save_as_clean_2023}
-code
+write_csv(kwb2023_selected, "kwb2023_clean.csv")
 ```
 
+**2024**
+
 ```{r open_raw_2024}
-code
+kwb2024 <- read_csv("kwb2024_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
 ```
 
 ```{r filter_municipalities_2024}
-code
+kwb2024_municipalities <- kwb2024[kwb2024$recs == "Gemeente", ]
 ```
 
 ```{r check_for_duplicate_municipalities_2024}
-code
+sum(duplicated(kwb2024_municipalities$gwb_code))
 ```
 
 ```{r add_year_variable_2024}
-code
+kwb2024_municipalities$year <- 2024
 ```
 
 ```{r remove_excess_variables_2024}
-code
+available_vars <- selected_vars[selected_vars %in% names(kwb2024_municipalities)]
+kwb2024_selected <- kwb2024_municipalities[, available_vars]
+
+summary(kwb2024_selected)
 ```
 
 ```{r set_wozbag_to_scale_2024}
-code
+kwb2024_selected$g_wozbag <- kwb2024_selected$g_wozbag * 1000
 ```
 
 ```{r save_as_clean_2024}
-code
+write_csv(kwb2024_selected, "kwb2024_clean.csv")
 ```
 
+**2025**
+
 ```{r open_raw_2025}
-code
+kwb2025 <- read_csv("kwb2025_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
 ```
 
 ```{r filter_municipalities_2025}
-code
+kwb2025_municipalities <- kwb2025[kwb2025$recs == "Gemeente", ]
 ```
 
 ```{r check_for_duplicate_municipalities_2025}
-code
+sum(duplicated(kwb2025_municipalities$gwb_code))
 ```
 
 ```{r add_year_variable_2025}
-code
+kwb2025_municipalities$year <- 2025
 ```
 
 ```{r remove_excess_variables_2025}
-code
+available_vars <- selected_vars[selected_vars %in% names(kwb2025_municipalities)]
+kwb2025_selected <- kwb2025_municipalities[, available_vars]
+
+summary(kwb2025_selected)
 ```
 
 ```{r set_wozbag_to_scale_2025}
-code
+kwb2025_selected$g_wozbag <- kwb2025_selected$g_wozbag * 1000
 ```
 
 ```{r save_as_clean_2025}
-code
+write_csv(kwb2025_selected, "kwb2025_clean.csv")
 ```
 
 please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
