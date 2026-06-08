@@ -342,7 +342,7 @@ p1 <- mdf %>%
   labs(
     title = "Housing pressure",
     x = "Year",
-    y = "Average value"
+    y = "Average housing pressure\n(households / dwellings)"
   ) +
   theme_minimal()
 
@@ -356,12 +356,12 @@ p2 <- mdf %>%
   labs(
     title = "Paradox index",
     x = "Year",
-    y = "Average value"
+    y = "Average paradox index"
   ) +
   theme_minimal()
 
 # Beide grafieken naast elkaar
-p1 + p2 + 
+p1 + p2 +
   plot_annotation(
     title = "Trends in Dutch municipalities, 2020-2025",
     subtitle = "Housing pressure and paradox index over time"
@@ -418,7 +418,7 @@ ggplot(nl_map_data) +
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+avHere you provide a description of why the plot above is relevant to your specific social problem.
 
 ## 3.5 Visualize sub-population variation
 
