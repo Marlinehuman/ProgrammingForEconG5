@@ -27,11 +27,11 @@ library(dplyr)
 
 # Title Page
 
-Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haavekost en Jermaine Koreman.
+Marline Human, Nando Fredricks, Storm bakker, Jasper Haavekost en Jermaine Koreman.
 
-Include the tutorial group number group: 1.5
+Tutorial group number: 1.5
 
-Include your tutorial lecturer's name: Chantal Schouwenaar
+Tutorial lecturer's name: Chantal Schouwenaar
 
 # Part 1 - Identify a Social Problem
 
@@ -81,13 +81,27 @@ The exact meaning and units of the variables differ and are explained in the CBS
 
 ## 2.3 Describe the type of variables included
 
-The data used is official government data, and is collected through a combination of existing government registries, municipal administrative data, and spatial mapping.
+The dataset contains several types of variables relevant to our analysis. The core housing variables include `housing_stock` (total housing stock), `households` (number of households), and `vacancy_rate_percent` (vacancy rate as a percentage). These are administrative variables collected from municipal registries and housing surveys.
+
+Ownership and rental structure is captured through `owner_occupied_share_percent`, `rental_share_percent`, `corporation_owned_share_percent`, and `private_rental_share_percent` — all expressed as percentages of total housing stock.
+
+Urban density is measured through `urbanity_code` (ranging from 1 = very strongly urban to 5 = non-urban) and `population_density` (per km²). Property values are captured through `average_woz_value_eur`, which serves as a proxy for housing market prices.
+
+All variables are measured at municipality level and are derived from administrative sources rather than surveys, which ensures high coverage but may mask within-municipality variation. The dataset does not include individual-level data, meaning inequality within municipalities cannot be observed directly.
 
 # Part 3 - Quantifying
 
 ## 3.1 Data cleaning
 
-The raw CBS Excel files were cleaned using a separate R script (scripts/Datacleaning.R). The cleaning steps included: filtering to municipality-level observations only, adding a year identifier, selecting relevant variables, and scaling the WOZ value. The cleaned dataset was saved as a CSV file and is loaded above.
+The raw CBS Excel files were cleaned using a separate R script (scripts/Datacleaning.R). The cleaning process involved several deliberate choices.
+
+First, we filtered the dataset to municipality-level observations only (recs == "Gemeente"), excluding neighbourhood and district-level rows. This choice was made because municipalities are the most relevant unit for housing policy analysis — they are the administrative bodies responsible for zoning, construction permits, and social housing allocation. Aggregating to a higher level would obscure important local variation, while neighbourhood-level data would introduce noise and missing values.
+
+Second, we selected 15 variables from the original dataset of over 100 columns. The selected variables cover housing stock, vacancy, ownership structure, urbanity, population density, and property values — the core dimensions needed to quantify housing pressure and the housing paradox. Variables unrelated to housing (such as health or education indicators) were excluded to keep the analysis focused.
+
+Third, the WOZ value variable (`g_wozbag`) was multiplied by 1000 to convert it from thousands of euros to euros, ensuring the unit is interpretable and consistent with other monetary variables.
+
+One limitation of this cleaning approach is that municipalities change over time due to mergers. Some municipalities present in 2020 may not exist under the same name in 2025, which could introduce small inconsistencies in the longitudinal analysis..
 
 ## 3.2 Generate necessary variables
 
