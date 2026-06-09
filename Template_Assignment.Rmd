@@ -8,25 +8,21 @@ output: pdf_document
 # Set-up your environment
 
 ```{r package_install, include=FALSE}
-install.packages("tidyverse")
-install.packages("yaml")
-install.packages("rmarkdown")
-install.packages("ggplot2")
-install.packages("sf")
-install.packages("patchwork")
-install.packages("cbsodataR")
-install.packages("scales")
+# Run once in console, not here:
+# install.packages(c("tidyverse","yaml","rmarkdown","ggplot2","sf","patchwork","cbsodataR","scales","here"))
 ```
 
-```{r packages}
-require(tidyverse)
-require(rmarkdown)
-require(yaml)
-require(ggplot2)
-require(sf)
-require(patchwork)
-require(cbsodataR)
-require(scales)
+```{r packages, include=FALSE}
+library(here)
+library(tidyverse)
+library(rmarkdown)
+library(yaml)
+library(ggplot2)
+library(sf)
+library(patchwork)
+library(cbsodataR)
+library(scales)
+library(dplyr)
 ```
 
 # Title Page
@@ -35,7 +31,7 @@ Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haaveko
 
 Include the tutorial group number group: 1.5
 
-Include your tutorial lecturer's name: Include your tutorial lecturer's name: Chantal Schouwenaar \>\>\>\>\>\>\> 85d130eb228492501734ba45d46a227b4a6605b6
+Include your tutorial lecturer's name: Chantal Schouwenaar
 
 # Part 1 - Identify a Social Problem
 
@@ -65,208 +61,33 @@ By quantifying and visualizing how housing pressure and vacancy vary across Dutc
 
 ## 2.1 Load in the data
 
-Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
-
-The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis.
-
-```{r loading packages}
-library(readxl)
-
-library(dplyr)
-
-library(purrr)
-
-library(ggplot2)
-```
+The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis.
 
 ```{r load_data}
-library(here)
-library(dplyr)
-library(ggplot2)
-library(patchwork)
-library(scales)
-library(sf)
-library(cbsodataR)
-
 mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
 ```
 
-**2021**
+## 2.2 Provide a short summary of the datasets
 
-```{r open_raw_2021}
-kwb2021 <- read_csv("kwb2021_raw.csv",
-                    na = c(".", "", "NA"),
-                    show_col_types = FALSE)
+```{r summary}
+head(mdf)
 ```
 
-```{r filter_municipalities_2021}
-kwb2021_municipalities <- kwb2021[kwb2021$recs == "Gemeente", ]
-```
+This dataset comes from CBS and contains information about Dutch municipalities for the years 2020 to 2025. It includes data on topics such as population, housing, income, and households.
 
-```{r check_for_duplicate_municipalities_2021}
-sum(duplicated(kwb2021_municipalities$gwb_code))
-```
+For our project, we mainly use the housing-related information. The dataset contains variables that can help us study housing pressure and vacancy across municipalities. Because the data cover multiple years, it is possible to see whether these patterns have changed over time.
 
-```{r add_year_variable_2021}
-kwb2021_municipalities$year <- 2021
-```
+The exact meaning and units of the variables differ and are explained in the CBS metadata that accompany the dataset.
 
-```{r remove_excess_variables_2021}
-available_vars <- selected_vars[selected_vars %in% names(kwb2021_municipalities)]
-kwb2021_selected <- kwb2021_municipalities[, available_vars]
+## 2.3 Describe the type of variables included
 
-summary(kwb2021_selected)
-```
+The data used is official government data, and is collected through a combination of existing government registries, municipal administrative data, and spatial mapping.
 
-```{r set_wozbag_to_scale_2021}
-kwb2021_selected$g_wozbag <- kwb2021_selected$g_wozbag * 1000
-```
+# Part 3 - Quantifying
 
-```{r save_as_clean_2021}
-write_csv(kwb2021_selected, "kwb2021_clean.csv") 
-```
+## 3.1 Data cleaning
 
-**2022**
-
-```{r open_raw_2022}
-kwb2022 <- read_csv("kwb2022_raw.csv",
-                    na = c(".", "", "NA"),
-                    show_col_types = FALSE)
-```
-
-```{r filter_municipalities_2022}
-kwb2022_municipalities <- kwb2022[kwb2022$recs == "Gemeente", ]
-```
-
-```{r check_for_duplicate_municipalities_2022}
-sum(duplicated(kwb2022_municipalities$gwb_code))
-```
-
-```{r add_year_variable_2022}
-kwb2022_municipalities$year <- 2022
-```
-
-```{r remove_excess_variables_2022}
-available_vars <- selected_vars[selected_vars %in% names(kwb2022_municipalities)]
-kwb2022_selected <- kwb2022_municipalities[, available_vars]
-
-summary(kwb2022_selected)
-```
-
-```{r set_wozbag_to_scale_2022}
-kwb2022_selected$g_wozbag <- kwb2022_selected$g_wozbag * 1000
-```
-
-```{r save_as_clean_2022}
-write_csv(kwb2022_selected, "kwb2022_clean.csv")
-```
-
-**2023**
-
-```{r open_raw_2023}
-kwb2023 <- read_csv("kwb2023_raw.csv",
-                    na = c(".", "", "NA"),
-                    show_col_types = FALSE)
-```
-
-```{r filter_municipalities_2023}
-kwb2023_municipalities <- kwb2023[kwb2023$recs == "Gemeente", ]
-```
-
-```{r check_for_duplicate_municipalities_2023}
-sum(duplicated(kwb2023_municipalities$gwb_code))
-```
-
-```{r add_year_variable_2023}
-kwb2023_municipalities$year <- 2023
-```
-
-```{r remove_excess_variables_2023}
-available_vars <- selected_vars[selected_vars %in% names(kwb2023_municipalities)]
-kwb2023_selected <- kwb2023_municipalities[, available_vars]
-
-summary(kwb2023_selected)
-```
-
-```{r set_wozbag_to_scale_2023}
-kwb2023_selected$g_wozbag <- kwb2023_selected$g_wozbag * 1000
-```
-
-```{r save_as_clean_2023}
-write_csv(kwb2023_selected, "kwb2023_clean.csv")
-```
-
-**2024**
-
-```{r open_raw_2024}
-kwb2024 <- read_csv("kwb2024_raw.csv",
-                    na = c(".", "", "NA"),
-                    show_col_types = FALSE)
-```
-
-```{r filter_municipalities_2024}
-kwb2024_municipalities <- kwb2024[kwb2024$recs == "Gemeente", ]
-```
-
-```{r check_for_duplicate_municipalities_2024}
-sum(duplicated(kwb2024_municipalities$gwb_code))
-```
-
-```{r add_year_variable_2024}
-kwb2024_municipalities$year <- 2024
-```
-
-```{r remove_excess_variables_2024}
-available_vars <- selected_vars[selected_vars %in% names(kwb2024_municipalities)]
-kwb2024_selected <- kwb2024_municipalities[, available_vars]
-
-summary(kwb2024_selected)
-```
-
-```{r set_wozbag_to_scale_2024}
-kwb2024_selected$g_wozbag <- kwb2024_selected$g_wozbag * 1000
-```
-
-```{r save_as_clean_2024}
-write_csv(kwb2024_selected, "kwb2024_clean.csv")
-```
-
-**2025**
-
-```{r open_raw_2025}
-kwb2025 <- read_csv("kwb2025_raw.csv",
-                    na = c(".", "", "NA"),
-                    show_col_types = FALSE)
-```
-
-```{r filter_municipalities_2025}
-kwb2025_municipalities <- kwb2025[kwb2025$recs == "Gemeente", ]
-```
-
-```{r check_for_duplicate_municipalities_2025}
-sum(duplicated(kwb2025_municipalities$gwb_code))
-```
-
-```{r add_year_variable_2025}
-kwb2025_municipalities$year <- 2025
-```
-
-```{r remove_excess_variables_2025}
-available_vars <- selected_vars[selected_vars %in% names(kwb2025_municipalities)]
-kwb2025_selected <- kwb2025_municipalities[, available_vars]
-
-summary(kwb2025_selected)
-```
-
-```{r set_wozbag_to_scale_2025}
-kwb2025_selected$g_wozbag <- kwb2025_selected$g_wozbag * 1000
-```
-
-```{r save_as_clean_2025}
-write_csv(kwb2025_selected, "kwb2025_clean.csv")
-```
-
-please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
+The raw CBS Excel files were cleaned using a separate R script (scripts/Datacleaning.R). The cleaning steps included: filtering to municipality-level observations only, adding a year identifier, selecting relevant variables, and scaling the WOZ value. The cleaned dataset was saved as a CSV file and is loaded above.
 
 ## 3.2 Generate necessary variables
 
@@ -279,7 +100,6 @@ mdf <- mdf %>%
   mutate(housing_pressure = a_hh / a_woning)
 
 summary(mdf$housing_pressure)
-
 ```
 
 Housing pressure measures the ratio of households to dwellings in each municipality. A value above 1 indicates that there are more households than available dwellings, suggesting that demand exceeds supply.
@@ -294,14 +114,13 @@ mdf <- mdf %>%
   mutate(paradox_index = housing_pressure * p_leegsw)
 
 summary(mdf$paradox_index)
-mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
 ```
 
 The paradox index combines housing pressure with vacancy to capture the central puzzle of our research: how can shortage and vacancy coexist? A high paradox index identifies municipalities with both high pressure and high vacancy — the exact contradiction this project seeks to explain. Multiplying both values gives weight to municipalities where both problems occur simultaneously.
 
 ## 3.3 Visualize temporal variation
 
-```{r}
+```{r temporal_variation}
 library(patchwork)
 
 # Trend housing pressure
@@ -349,26 +168,19 @@ The paradox index (right panel) shows a more complex pattern: a sharp decline be
 ## 3.4 Visualize spatial variation
 
 ```{r visualise_map}
-# Stap 1: packages laden
-library(sf)
-library(cbsodataR)
-library(dplyr)
-library(ggplot2)
-library(scales)
-
-# Stap 2: shapefile ophalen van CBS
+# Shapefile ophalen van CBS
 nl_map <- cbs_get_sf("gemeente", year = 2023)
 
-# Stap 3: data samenvatten per gemeente
+# Data samenvatten per gemeente
 map_data <- mdf |>
-  group_by(municipality_name) |>
+  group_by(gm_naam) |>
   summarise(avg_paradox = mean(paradox_index, na.rm = TRUE))
 
-# Stap 4: samenvoegen met shapefile
+# Samenvoegen met shapefile
 nl_map_data <- nl_map |>
-  left_join(map_data, by = c("statnaam" = "municipality_name"))
+  left_join(map_data, by = c("statnaam" = "gm_naam"))
 
-# Stap 5: kaart plotten
+# Kaart plotten
 ggplot(nl_map_data) +
   geom_sf(aes(fill = avg_paradox), colour = "white", linewidth = 0.1) +
   scale_fill_viridis_c(
@@ -390,12 +202,13 @@ ggplot(nl_map_data) +
   )
 ```
 
-This map reveals substantial spatial variation in the housing paradox across Dutch municipalities. The highest paradox index values are concentrated in municipalities in the western Randstad region particularly around Amsterdam, Utrecht and The Hague as well as in parts of Noord-Brabant. This suggests that housing pressure and vacancy coexist most severely in already densely populated urban areas. Notably, several municipalities in Zeeland and Friesland also show elevated values, indicating that the paradox is not exclusively an urban phenomenon. This spatial heterogeneity underlines that national housing policy may be insufficient targeted regional interventions are likely needed to address the paradox where it is most acute.3.5 Visualize sub-population variation
+This map reveals substantial spatial variation in the housing paradox across Dutch municipalities. The highest paradox index values are concentrated in municipalities in the western Randstad region — particularly around Amsterdam, Utrecht and The Hague — as well as in parts of Noord-Brabant. This suggests that housing pressure and vacancy coexist most severely in already densely populated urban areas. Notably, several municipalities in Zeeland and Friesland also show elevated values, indicating that the paradox is not exclusively an urban phenomenon. This spatial heterogeneity underlines that national housing policy may be insufficient — targeted regional interventions are likely needed to address the paradox where it is most acute.
+
+## 3.5 Visualize sub-population variation
 
 > What is the distribution of housing pressure across municipalities with different urbanity levels?
 
 ```{r visualise_subpopulations}
-# Boxplot: housing pressure per urbanity group
 mdf %>%
   mutate(urbanity_label = as.factor(urbanity_label)) %>%
   ggplot(aes(x = urbanity_label, y = housing_pressure, 
@@ -412,7 +225,7 @@ mdf %>%
   theme(legend.position = "none")
 ```
 
-The figure shows that housing pressure is highest in strongly and very strongly urban municipalities, with median values close to 1.0 meaning nearly all dwellings are occupied. Non-urban and slightly urban municipalities show considerably more variation and lower median values, suggesting that housing markets in rural areas are less tight overall. The narrower interquartile range in urban categories indicates that high housing pressure is consistently present across urban municipalities, while rural areas show more heterogeneity. This pattern supports the hypothesis that the housing paradox is primarily driven by urban demand exceeding supply, and suggests that policy interventions targeting vacancy should focus on urbanised areas where pressure is most persistent.
+The figure shows that housing pressure is highest in strongly and very strongly urban municipalities, with median values close to 1.0 — meaning nearly all dwellings are occupied. Non-urban and slightly urban municipalities show considerably more variation and lower median values, suggesting that housing markets in rural areas are less tight overall. The narrower interquartile range in urban categories indicates that high housing pressure is consistently present across urban municipalities, while rural areas show more heterogeneity. This pattern supports the hypothesis that the housing paradox is primarily driven by urban demand exceeding supply, and suggests that policy interventions targeting vacancy should focus on urbanised areas where pressure is most persistent.
 
 ## 3.6 Event analysis
 
@@ -424,7 +237,6 @@ mdf %>%
   summarise(avg_paradox = mean(paradox_index, na.rm = TRUE)) %>%
   ggplot(aes(x = year, y = avg_paradox)) +
   
-  # Gekleurde achtergrond voor/na
   annotate("rect", xmin = 2019.5, xmax = 2022, 
            ymin = -Inf, ymax = Inf,
            fill = "steelblue", alpha = 0.1) +
@@ -432,16 +244,13 @@ mdf %>%
            ymin = -Inf, ymax = Inf,
            fill = "darkred", alpha = 0.1) +
   
-  # Één doorlopende lijn
   geom_line(linewidth = 1.2, colour = "black") +
   geom_point(size = 3, colour = "black") +
   
-  # Verticale lijn + label
   geom_vline(xintercept = 2022, linetype = "dashed", linewidth = 0.8) +
   annotate("text", x = 2022.1, y = 4.28, 
            label = "ECB rate hike (2022)", hjust = 0, size = 3.5) +
   
-  # Labels voor periodes
   annotate("text", x = 2021, y = 4.115, 
            label = "Before", colour = "steelblue", size = 3.5) +
   annotate("text", x = 2023.5, y = 4.115, 
@@ -457,7 +266,7 @@ mdf %>%
   theme_minimal()
 ```
 
-The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB interest rate hike in June 2022. By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions increasing effective vacancy while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
+The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB interest rate hike in June 2022. By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions — increasing effective vacancy — while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
 
 # Part 4 - Discussion
 
@@ -473,8 +282,8 @@ Provide the link to your PUBLIC repository here: ...
 
 Use APA referencing throughout your document.
 
-Centraal Bureau voor de Statistiek. (2025). Kerncijfers wijken en buurten 2025 [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/> kerncijfers-wijken-en-buurten
+Centraal Bureau voor de Statistiek. (2025). *Kerncijfers wijken en buurten 2025* [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/kerncijfers-wijken-en-buurten>
 
-Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). Nationale Woon- en Bouwagenda. Rijksoverheid. <https://www.rijksoverheid.nl/>
+Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). *Nationale Woon- en Bouwagenda*. Rijksoverheid. <https://www.rijksoverheid.nl/>
 
-Planbureau voor de Leefomgeving. (2024). Ruimtelijke verkenning 2024. PBL. <https://www.pbl.nl/>
+Planbureau voor de Leefomgeving. (2024). *Ruimtelijke verkenning 2024*. PBL. <https://www.pbl.nl/>
