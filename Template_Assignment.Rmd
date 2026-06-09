@@ -35,8 +35,6 @@ Tutorial lecturer's name: Chantal Schouwenaar
 
 # Part 1 - Identify a Social Problem
 
-Use APA referencing throughout your document. [Here's a link to some explanation.](https://www.mendeley.com/guides/apa-citation-guide/)
-
 ## 1.1 Describe the Social Problem
 
 The Dutch housing market is under unprecedented pressure. Across the Netherlands, rental prices have risen sharply, buying a home has become unaffordable for many households, and waiting lists for social housing continue to grow (CBS, 2025; Kences, 2025). At the same time, a paradox emerges: despite the apparent shortage, a significant number of dwellings remain unoccupied in many municipalities.
@@ -111,7 +109,7 @@ Variable 1
 # Variable 1: Housing Pressure
 # Measures the ratio of households to dwellings per municipality
 mdf <- mdf %>%
-  mutate(housing_pressure = a_hh / a_woning)
+  mutate(housing_pressure = households / housing_stock)
 
 summary(mdf$housing_pressure)
 ```
@@ -125,7 +123,7 @@ Variable 2
 # Combines housing pressure and vacancy to identify municipalities 
 # where shortage and unused capacity coexist
 mdf <- mdf %>%
-  mutate(paradox_index = housing_pressure * p_leegsw)
+  mutate(paradox_index = housing_pressure * vacancy_rate_percent)
 
 summary(mdf$paradox_index)
 ```
@@ -241,6 +239,19 @@ mdf %>%
 
 The figure shows that housing pressure is highest in strongly and very strongly urban municipalities, with median values close to 1.0 — meaning nearly all dwellings are occupied. Non-urban and slightly urban municipalities show considerably more variation and lower median values, suggesting that housing markets in rural areas are less tight overall. The narrower interquartile range in urban categories indicates that high housing pressure is consistently present across urban municipalities, while rural areas show more heterogeneity. This pattern supports the hypothesis that the housing paradox is primarily driven by urban demand exceeding supply, and suggests that policy interventions targeting vacancy should focus on urbanised areas where pressure is most persistent.
 
+```{r subpopulation_table}
+mdf %>%
+  group_by(urbanity_label) %>%
+  summarise(
+    median_pressure  = round(median(housing_pressure, na.rm = TRUE), 3),
+    mean_pressure    = round(mean(housing_pressure, na.rm = TRUE), 3),
+    n_municipalities = n_distinct(gm_naam)
+  ) %>%
+  arrange(desc(median_pressure))
+```
+
+The table confirms the pattern shown in the boxplot. Very strongly urban municipalities show the highest median housing pressure (approximately 0.998), while non-urban municipalities have the lowest (approximately 0.972). This difference of roughly 0.026 points may appear small in absolute terms, but given that a value of 1.0 represents full occupancy, even small differences near the ceiling indicate meaningfully tighter housing markets in urban areas.
+
 ## 3.6 Event analysis
 
 How did the housing paradox index change before and after the ECB interest rate hike in 2022?
@@ -280,24 +291,34 @@ mdf %>%
   theme_minimal()
 ```
 
-The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB interest rate hike in June 2022. By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions — increasing effective vacancy — while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
+The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB interest rate hike in June 2022. By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions increasing effective vacancy — while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
 
 # Part 4 - Discussion
 
 ## 4.1 Discuss your findings
 
+Our analysis of Dutch municipalities between 2020 and 2025 reveals three key findings about the housing paradox.
+
+First, housing pressure has increased consistently over the study period, with the average ratio of households to dwellings rising from approximately 0.990 in 2020 to 0.998 in 2024. This confirms the pattern identified in the literature: structural housing shortages are worsening as demand continues to outpace supply (CBS, 2025; Ministerie van Binnenlandse Zaken en Koninkrijksrelaties, 2024).
+
+Second, the paradox index which captures the simultaneous occurrence of housing pressure and vacancy shows a U-shaped pattern over time. The decline between 2020 and 2022 may reflect pandemic-related reductions in mobility and vacancy, while the sharp rise after 2022 coincides with the ECB interest rate hike. Rising mortgage rates appear to have frozen the housing market: fewer transactions meant that both buyers and sellers became stuck, increasing effective vacancy while pressure remained high. This is consistent with the findings of Planbureau voor de Leefomgeving (2024), which identified liquidity constraints as a key driver of spatial housing mismatches.
+
+Third, the spatial and subgroup analyses reveal that the paradox is not uniform. Urban municipalities face the highest and most consistent housing pressure, while the paradox index is elevated in both Randstad municipalities and some peripheral areas such as Zeeland and Friesland. This suggests that the causes of the paradox differ by region: in urban areas it is driven by demand, while in peripheral areas vacancy may reflect demographic decline.
+
+Limitations. Several limitations should be acknowledged. The paradox index is a simple multiplicative measure and does not account for the types of vacant dwellings or the reasons for vacancy. Municipality mergers over the study period may introduce minor inconsistencies. Furthermore, all analyses are observational — the association between the ECB rate hike and the paradox index does not establish causality, and confounding factors such as construction delays and demographic shifts cannot be ruled out.
+
 # Part 5 - Reproducibility
 
 ## 5.1 Github repository link
 
-Provide the link to your PUBLIC repository here: ...
+<https://github.com/Marlinehuman/ProgrammingForEconG5>
 
 ## 5.2 Reference list
-
-Use APA referencing throughout your document.
 
 Centraal Bureau voor de Statistiek. (2025). *Kerncijfers wijken en buurten 2025* [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/kerncijfers-wijken-en-buurten>
 
 Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). *Nationale Woon- en Bouwagenda*. Rijksoverheid. <https://www.rijksoverheid.nl/>
 
 Planbureau voor de Leefomgeving. (2024). *Ruimtelijke verkenning 2024*. PBL. <https://www.pbl.nl/>
+
+Kences. (2025). *Studentenhuisvesting in Nederland*. Kences. <https://www.kences.nl/>
