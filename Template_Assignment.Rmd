@@ -79,22 +79,22 @@ library(purrr)
 library(ggplot2)
 ```
 
-```{r}
-files <- list.files("data/raw", pattern = "^kwb-20(20|21|22|23|24|25)\\.xlsx$", full.names = TRUE) 
-```
+library(here)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(scales)
+library(sf)
+library(cbsodataR)
 
 ```{r reading excel}
-dataset <- files |>
-
-map(read_excel) |>
-
-bind_rows()
+mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
 ```
 
 ## 2.2 Provide a short summary of the datasets
 
 ```{r}
-head(dataset)
+head(mdf)
 ```
 
 In this case we see 28 variables, but we miss some information on what units they are in. We also don't know anything about the year/moment in which this data has been captured.
