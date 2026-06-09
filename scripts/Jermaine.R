@@ -160,3 +160,561 @@ Provide the link to your PUBLIC repository here: ...
 ## 5.2 Reference list
 
 Use APA referencing throughout your document.
+
+--------------------------------------------------
+
+---
+title: "development of housing pressure and residential vacancy in Dutch municipalities between 2020 and 2025, and understanding coexistence and scarcity through price pressure, rental structure and urban density."
+author: "[Marline Human (2860665)], [Storm Bakker (2852941)], [Nando Fredricks (2888962)], [Student (studentnummer)] and [Jermaine Koreman (2866400)]."
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+# Set-up your environment
+
+```{r package_install, include=FALSE}
+install.packages("tidyverse")
+install.packages("yaml")
+install.packages("rmarkdown")
+install.packages("ggplot2")
+install.packages("sf")
+install.packages("patchwork")
+install.packages("cbsodataR")
+install.packages("scales")
+```
+
+```{r packages}
+require(tidyverse)
+require(rmarkdown)
+require(yaml)
+require(ggplot2)
+require(sf)
+require(patchwork)
+require(cbsodataR)
+require(scales)
+```
+
+# Title Page
+
+Include your names: Marline Human, Nando Fredricks, Storm bakker, Jasper Haavekost en Jermaine Koreman.
+
+Include the tutorial group number group: 1.5
+
+Include your tutorial lecturer's name: Include your tutorial lecturer's name: Chantal Schouwenaar \>\>\>\>\>\>\> 85d130eb228492501734ba45d46a227b4a6605b6
+
+# Part 1 - Identify a Social Problem
+
+Use APA referencing throughout your document. [Here's a link to some explanation.](https://www.mendeley.com/guides/apa-citation-guide/)
+
+## 1.1 Describe the Social Problem
+
+The Dutch housing market is under unprecedented pressure. Across the Netherlands, rental prices have risen sharply, buying a home has become unaffordable for many households, and waiting lists for social housing continue to grow (CBS, 2025; Kences, 2025). At the same time, a paradox emerges: despite the apparent shortage, a significant number of dwellings remain unoccupied in many municipalities.
+
+This combination of housing pressure and vacancy creates a social problem that does not affect all of the Netherlands equally. In some municipalities, housing pressure is severe and vacancy is low; in others, vacancy rates are surprisingly high despite national shortages. This spatial variation means that the opportunity to find affordable housing increasingly depends on where one lives a form of geographic inequality that affects young adults, lower income households, and people seeking to relocate.
+
+### Why is this relevant?
+
+This problem is relevant for several reasons:
+  
+  **1. Economic relevance.** The housing market is a cornerstone of the economy. Rising housing costs reduce disposable income, limit labor mobility, and contribute to wealth inequality between homeowners and renters (CBS, 2025). Geographic differences in housing pressure also shape patterns of regional economic development.
+
+**2. Social relevance.** Access to affordable housing is widely considered a basic right. When access depends heavily on geography, spatial inequality deepens and social cohesion is undermined. The coexistence of shortage and vacancy raises difficult questions about the efficiency and fairness of the housing system.
+
+**3. Policy relevance.** Understanding where housing pressure is most severe and where it coincides with vacancy helps policymakers target interventions more effectively. A municipality-level analysis can inform decisions about new construction, rent regulation, and vacancy policies, and shows which areas need attention most urgently.
+
+**4. Personal relevance.** As students at VU Amsterdam, we experience the consequences of housing pressure directly. By analyzing the problem at a national scale, we move beyond our own situation and investigate the structural forces shaping housing access across the Netherlands.
+
+By quantifying and visualizing how housing pressure and vacancy vary across Dutch municipalities between 2020 and 2025, this project aims to make the scale and distribution of the problem visible, and to identify which types of municipalities face the sharpest paradox between scarcity and unused capacity.
+
+# Part 2 - Data Sourcing
+
+## 2.1 Load in the data
+
+Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
+  
+  The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis.
+
+```{r loading packages}
+library(readxl)
+
+library(dplyr)
+
+library(purrr)
+
+library(ggplot2)
+```
+
+```{r}
+files <- list.files("data/raw", pattern = "^kwb-20(20|21|22|23|24|25)\\.xlsx$", full.names = TRUE) 
+```
+
+```{r reading excel}
+dataset <- files |>
+  
+  map(read_excel) |>
+  
+  bind_rows()
+```
+
+## 2.2 Provide a short summary of the datasets
+
+```{r}
+head(dataset)
+```
+
+In this case we see 28 variables, but we miss some information on what units they are in. We also don't know anything about the year/moment in which this data has been captured.
+
+``` r
+inline_code = TRUE
+```
+
+These are things that are usually included in the metadata of the dataset. For your project, you need to provide us with the information from your metadata that we need to understand your dataset of choice.
+
+This dataset comes from CBS and contains information about Dutch municipalities for the years 2020 to 2025. It includes data on topics such as population, housing, income, and households.
+
+For our project, we mainly use the housing-related information. The dataset contains variables that can help us study housing pressure and vacancy across municipalities. Because the data cover multiple years, it is possible to see whether these patterns have changed over time.
+
+The exact meaning and units of the variables differ and are explained in the CBS metadata that accompany the dataset.
+
+`glimpse(dataset)`
+
+## 2.3 Describe the type of variables included
+
+Think of things like:
+
+- *Do the variables contain health information or SES information?*
+
+- *Have they been measured by interviewing individuals or is the data coming from administrative sources?* The data used is official government data, and is collected through a combination of existing government registries, municipal administrative data, and spatial mapping.
+
+*For the sake of this example, I will continue with the assignment...*
+
+# Part 3 - Quantifying
+
+## 3.1 Data cleaning
+
+Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
+
+**2020**
+
+```{r open_raw_2020}
+kwb2020 <- read_csv("kwb2020_raw.csv",
+  na = c(".", "", "NA"),
+  show_col_types = FALSE)
+```
+
+```{r filter_municipalities_2020}
+kwb2020_municipalities <- kwb2020[kwb2020$recs == "Gemeente", ]
+```
+
+```{r check_for_duplicate_municipalities_2020}
+sum(duplicated(kwb2020_municipalities$gwb_code))
+```
+
+```{r add_year_variable_2020}
+kwb2020_municipalities$year <- 2020
+```
+
+```{r remove_excess_variables_2020}
+available_vars <- selected_vars[selected_vars %in% names(kwb2020_municipalities)]
+kwb2020_selected <- kwb2020_municipalities[, available_vars]
+
+summary(kwb2020_selected)
+```
+
+```{r set_wozbag_to_scale_2020}
+kwb2020_selected$g_wozbag <- kwb2020_selected$g_wozbag * 1000
+```
+
+```{r save_as_clean_2020}
+write_csv(kwb2020_selected, "kwb2020_clean.csv")
+```
+
+**2021**
+
+```{r open_raw_2021}
+kwb2021 <- read_csv("kwb2021_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+```
+
+```{r filter_municipalities_2021}
+kwb2021_municipalities <- kwb2021[kwb2021$recs == "Gemeente", ]
+```
+
+```{r check_for_duplicate_municipalities_2021}
+sum(duplicated(kwb2021_municipalities$gwb_code))
+```
+
+```{r add_year_variable_2021}
+kwb2021_municipalities$year <- 2021
+```
+
+```{r remove_excess_variables_2021}
+available_vars <- selected_vars[selected_vars %in% names(kwb2021_municipalities)]
+kwb2021_selected <- kwb2021_municipalities[, available_vars]
+
+summary(kwb2021_selected)
+```
+
+```{r set_wozbag_to_scale_2021}
+kwb2021_selected$g_wozbag <- kwb2021_selected$g_wozbag * 1000
+```
+
+```{r save_as_clean_2021}
+write_csv(kwb2021_selected, "kwb2021_clean.csv") 
+```
+
+**2022**
+
+```{r open_raw_2022}
+kwb2022 <- read_csv("kwb2022_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+```
+
+```{r filter_municipalities_2022}
+kwb2022_municipalities <- kwb2022[kwb2022$recs == "Gemeente", ]
+```
+
+```{r check_for_duplicate_municipalities_2022}
+sum(duplicated(kwb2022_municipalities$gwb_code))
+```
+
+```{r add_year_variable_2022}
+kwb2022_municipalities$year <- 2022
+```
+
+```{r remove_excess_variables_2022}
+available_vars <- selected_vars[selected_vars %in% names(kwb2022_municipalities)]
+kwb2022_selected <- kwb2022_municipalities[, available_vars]
+
+summary(kwb2022_selected)
+```
+
+```{r set_wozbag_to_scale_2022}
+kwb2022_selected$g_wozbag <- kwb2022_selected$g_wozbag * 1000
+```
+
+```{r save_as_clean_2022}
+write_csv(kwb2022_selected, "kwb2022_clean.csv")
+```
+
+**2023**
+
+```{r open_raw_2023}
+kwb2023 <- read_csv("kwb2023_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+```
+
+```{r filter_municipalities_2023}
+kwb2023_municipalities <- kwb2023[kwb2023$recs == "Gemeente", ]
+```
+
+```{r check_for_duplicate_municipalities_2023}
+sum(duplicated(kwb2023_municipalities$gwb_code))
+```
+
+```{r add_year_variable_2023}
+kwb2023_municipalities$year <- 2023
+```
+
+```{r remove_excess_variables_2023}
+available_vars <- selected_vars[selected_vars %in% names(kwb2023_municipalities)]
+kwb2023_selected <- kwb2023_municipalities[, available_vars]
+
+summary(kwb2023_selected)
+```
+
+```{r set_wozbag_to_scale_2023}
+kwb2023_selected$g_wozbag <- kwb2023_selected$g_wozbag * 1000
+```
+
+```{r save_as_clean_2023}
+write_csv(kwb2023_selected, "kwb2023_clean.csv")
+```
+
+**2024**
+
+```{r open_raw_2024}
+kwb2024 <- read_csv("kwb2024_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+```
+
+```{r filter_municipalities_2024}
+kwb2024_municipalities <- kwb2024[kwb2024$recs == "Gemeente", ]
+```
+
+```{r check_for_duplicate_municipalities_2024}
+sum(duplicated(kwb2024_municipalities$gwb_code))
+```
+
+```{r add_year_variable_2024}
+kwb2024_municipalities$year <- 2024
+```
+
+```{r remove_excess_variables_2024}
+available_vars <- selected_vars[selected_vars %in% names(kwb2024_municipalities)]
+kwb2024_selected <- kwb2024_municipalities[, available_vars]
+
+summary(kwb2024_selected)
+```
+
+```{r set_wozbag_to_scale_2024}
+kwb2024_selected$g_wozbag <- kwb2024_selected$g_wozbag * 1000
+```
+
+```{r save_as_clean_2024}
+write_csv(kwb2024_selected, "kwb2024_clean.csv")
+```
+
+**2025**
+
+```{r open_raw_2025}
+kwb2025 <- read_csv("kwb2025_raw.csv",
+                    na = c(".", "", "NA"),
+                    show_col_types = FALSE)
+```
+
+```{r filter_municipalities_2025}
+kwb2025_municipalities <- kwb2025[kwb2025$recs == "Gemeente", ]
+```
+
+```{r check_for_duplicate_municipalities_2025}
+sum(duplicated(kwb2025_municipalities$gwb_code))
+```
+
+```{r add_year_variable_2025}
+kwb2025_municipalities$year <- 2025
+```
+
+```{r remove_excess_variables_2025}
+available_vars <- selected_vars[selected_vars %in% names(kwb2025_municipalities)]
+kwb2025_selected <- kwb2025_municipalities[, available_vars]
+
+summary(kwb2025_selected)
+```
+
+```{r set_wozbag_to_scale_2025}
+kwb2025_selected$g_wozbag <- kwb2025_selected$g_wozbag * 1000
+```
+
+```{r save_as_clean_2025}
+write_csv(kwb2025_selected, "kwb2025_clean.csv")
+```
+
+please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
+
+## 3.2 Generate necessary variables
+
+Variable 1
+
+```{r gen_var1}
+# Variable 1: Housing Pressure
+# Measures the ratio of households to dwellings per municipality
+mdf <- mdf %>%
+  mutate(housing_pressure = a_hh / a_woning)
+
+summary(mdf$housing_pressure)
+
+```
+
+Housing pressure measures the ratio of households to dwellings in each municipality. A value above 1 indicates that there are more households than available dwellings, suggesting that demand exceeds supply.
+
+Variable 2
+
+```{r gen_var2}
+# Variable 2: Paradox Index
+# Combines housing pressure and vacancy to identify municipalities 
+# where shortage and unused capacity coexist
+mdf <- mdf %>%
+  mutate(paradox_index = housing_pressure * p_leegsw)
+
+summary(mdf$paradox_index)
+mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
+```
+
+The paradox index combines housing pressure with vacancy to capture the central puzzle of our research: how can shortage and vacancy coexist? A high paradox index identifies municipalities with both high pressure and high vacancy — the exact contradiction this project seeks to explain. Multiplying both values gives weight to municipalities where both problems occur simultaneously.
+
+## 3.3 Visualize temporal variation
+
+```{r}
+library(patchwork)
+
+# Trend housing pressure
+p1 <- mdf %>%
+  group_by(year) %>%
+  summarise(avg = mean(housing_pressure, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = avg)) +
+  geom_line(linewidth = 1.2, color = "steelblue") +
+  geom_point(size = 3, color = "steelblue") +
+  labs(
+    title = "Housing pressure",
+    x = "Year",
+    y = "Average housing pressure\n(households / dwellings)"
+  ) +
+  theme_minimal()
+
+# Trend paradox index
+p2 <- mdf %>%
+  group_by(year) %>%
+  summarise(avg = mean(paradox_index, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = avg)) +
+  geom_line(linewidth = 1.2, color = "darkred") +
+  geom_point(size = 3, color = "darkred") +
+  labs(
+    title = "Paradox index",
+    x = "Year",
+    y = "Average paradox index"
+  ) +
+  theme_minimal()
+
+# Beide grafieken naast elkaar
+p1 + p2 +
+  plot_annotation(
+    title = "Trends in Dutch municipalities, 2020-2025",
+    subtitle = "Housing pressure and paradox index over time"
+  )
+```
+
+This figure shows the evolution of housing pressure and the paradox index across Dutch municipalities between 2020 and 2025. Each indicator is shown on its own scale to make changes over time visible.
+
+Housing pressure (left panel) shows a clear upward trend: the average ratio of households to dwellings increased from approximately 0.990 in 2021 to 0.998 in 2024, before slightly decreasing in 2025. This pattern suggests that demand for housing has been rising faster than supply.
+
+The paradox index (right panel) shows a more complex pattern: a sharp decline between 2020 and 2022, followed by a steady rise. The 2022 turning point may reflect post-pandemic housing market shifts, such as rising interest rates and changes in rental market policy. The resurgence of the paradox index in recent years suggests that shortage and vacancy are increasingly occurring side by side.
+
+## 3.4 Visualize spatial variation
+
+```{r visualise_map}
+# Stap 1: packages laden
+library(sf)
+library(cbsodataR)
+library(dplyr)
+library(ggplot2)
+library(scales)
+
+# Stap 2: shapefile ophalen van CBS
+nl_map <- cbs_get_sf("gemeente", year = 2023)
+
+# Stap 3: data samenvatten per gemeente
+map_data <- mdf |>
+  group_by(municipality_name) |>
+  summarise(avg_paradox = mean(paradox_index, na.rm = TRUE))
+
+# Stap 4: samenvoegen met shapefile
+nl_map_data <- nl_map |>
+  left_join(map_data, by = c("statnaam" = "municipality_name"))
+
+# Stap 5: kaart plotten
+ggplot(nl_map_data) +
+  geom_sf(aes(fill = avg_paradox), colour = "white", linewidth = 0.1) +
+  scale_fill_viridis_c(
+    option = "plasma",
+    name = "Paradox index",
+    limits = c(0, 10),
+    oob = scales::squish
+  ) +
+  labs(
+    title = "Spatial variation in the housing paradox",
+    subtitle = "Average paradox index per Dutch municipality (2020–2025)",
+    caption = "Source: CBS Kerncijfers Wijken en Buurten"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(size = 13, face = "bold"),
+    plot.subtitle = element_text(size = 10)
+  )
+```
+
+avHere you provide a description of why the plot above is relevant to your specific social problem.
+
+## 3.5 Visualize sub-population variation
+
+What is the poverty rate by state?
+
+```{r visualise_subpopulations}
+# Boxplot: housing pressure per urbanity group
+mdf %>%
+  mutate(urbanity_label = as.factor(urbanity_label)) %>%
+  ggplot(aes(x = urbanity_label, y = housing_pressure, 
+             fill = urbanity_label)) +
+  geom_boxplot() +
+  labs(
+    title = "Housing pressure by urbanity level",
+    subtitle = "Distribution across Dutch municipalities (2020–2025)",
+    x = "Urbanity level",
+    y = "Housing pressure (households / dwellings)",
+    caption = "Source: CBS Kerncijfers Wijken en Buurten"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+Here you provide a description of why the plot above is relevant to your specific social problem.
+
+## 3.6 Event analysis
+
+Analyze the relationship between two variables.
+
+```{r analysis}
+mdf %>%
+  group_by(year) %>%
+  summarise(avg_paradox = mean(paradox_index, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = avg_paradox)) +
+  
+  # Gekleurde achtergrond voor/na
+  annotate("rect", xmin = 2019.5, xmax = 2022, 
+           ymin = -Inf, ymax = Inf,
+           fill = "steelblue", alpha = 0.1) +
+  annotate("rect", xmin = 2022, xmax = 2025.5,
+           ymin = -Inf, ymax = Inf,
+           fill = "darkred", alpha = 0.1) +
+  
+  # Één doorlopende lijn
+  geom_line(linewidth = 1.2, colour = "black") +
+  geom_point(size = 3, colour = "black") +
+  
+  # Verticale lijn + label
+  geom_vline(xintercept = 2022, linetype = "dashed", linewidth = 0.8) +
+  annotate("text", x = 2022.1, y = 4.28, 
+           label = "ECB rate hike (2022)", hjust = 0, size = 3.5) +
+  
+  # Labels voor periodes
+  annotate("text", x = 2021, y = 4.115, 
+           label = "Before", colour = "steelblue", size = 3.5) +
+  annotate("text", x = 2023.5, y = 4.115, 
+           label = "After", colour = "darkred", size = 3.5) +
+  
+  labs(
+    title = "Housing paradox before and after 2022",
+    subtitle = "Average paradox index per year across Dutch municipalities",
+    x = "Year",
+    y = "Average paradox index",
+    caption = "Source: CBS Kerncijfers Wijken en Buurten"
+  ) +
+  theme_minimal()
+```
+
+Here you provide a description of why the plot above is relevant to your specific social problem.
+
+# Part 4 - Discussion
+
+## 4.1 Discuss your findings
+
+# Part 5 - Reproducibility
+
+## 5.1 Github repository link
+
+Provide the link to your PUBLIC repository here: ...
+
+## 5.2 Reference list
+
+Use APA referencing throughout your document.
+
+Centraal Bureau voor de Statistiek. (2025). Kerncijfers wijken en buurten 2025 [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/> kerncijfers-wijken-en-buurten
+
+Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). Nationale Woon- en Bouwagenda. Rijksoverheid. <https://www.rijksoverheid.nl/>
+
+Planbureau voor de Leefomgeving. (2024). Ruimtelijke verkenning 2024. PBL. <https://www.pbl.nl/>
