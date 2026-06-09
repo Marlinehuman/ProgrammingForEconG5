@@ -79,6 +79,7 @@ library(purrr)
 library(ggplot2)
 ```
 
+```{r load_data}
 library(here)
 library(dplyr)
 library(ggplot2)
@@ -87,81 +88,7 @@ library(scales)
 library(sf)
 library(cbsodataR)
 
-```{r reading excel}
 mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
-```
-
-## 2.2 Provide a short summary of the datasets
-
-```{r}
-head(mdf)
-```
-
-In this case we see 28 variables, but we miss some information on what units they are in. We also don't know anything about the year/moment in which this data has been captured.
-
-``` r
-inline_code = TRUE
-```
-
-These are things that are usually included in the metadata of the dataset. For your project, you need to provide us with the information from your metadata that we need to understand your dataset of choice.
-
-This dataset comes from CBS and contains information about Dutch municipalities for the years 2020 to 2025. It includes data on topics such as population, housing, income, and households.
-
-For our project, we mainly use the housing-related information. The dataset contains variables that can help us study housing pressure and vacancy across municipalities. Because the data cover multiple years, it is possible to see whether these patterns have changed over time.
-
-The exact meaning and units of the variables differ and are explained in the CBS metadata that accompany the dataset.
-
-`glimpse(dataset)`
-
-## 2.3 Describe the type of variables included
-
-Think of things like:
-
-- *Do the variables contain health information or SES information?*
-
-- *Have they been measured by interviewing individuals or is the data coming from administrative sources?* The data used is official government data, and is collected through a combination of existing government registries, municipal administrative data, and spatial mapping.
-
-*For the sake of this example, I will continue with the assignment...*
-
-# Part 3 - Quantifying
-
-## 3.1 Data cleaning
-
-Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
-
-**2020**
-
-```{r open_raw_2020}
-kwb2020 <- read_csv("kwb2020_raw.csv",
-  na = c(".", "", "NA"),
-  show_col_types = FALSE)
-```
-
-```{r filter_municipalities_2020}
-kwb2020_municipalities <- kwb2020[kwb2020$recs == "Gemeente", ]
-```
-
-```{r check_for_duplicate_municipalities_2020}
-sum(duplicated(kwb2020_municipalities$gwb_code))
-```
-
-```{r add_year_variable_2020}
-kwb2020_municipalities$year <- 2020
-```
-
-```{r remove_excess_variables_2020}
-available_vars <- selected_vars[selected_vars %in% names(kwb2020_municipalities)]
-kwb2020_selected <- kwb2020_municipalities[, available_vars]
-
-summary(kwb2020_selected)
-```
-
-```{r set_wozbag_to_scale_2020}
-kwb2020_selected$g_wozbag <- kwb2020_selected$g_wozbag * 1000
-```
-
-```{r save_as_clean_2020}
-write_csv(kwb2020_selected, "kwb2020_clean.csv")
 ```
 
 **2021**
