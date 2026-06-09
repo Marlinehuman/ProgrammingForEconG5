@@ -99,11 +99,11 @@ Second, we selected 15 variables from the original dataset of over 100 columns. 
 
 Third, the WOZ value variable (`g_wozbag`) was multiplied by 1000 to convert it from thousands of euros to euros, ensuring the unit is interpretable and consistent with other monetary variables.
 
-One limitation of this cleaning approach is that municipalities change over time due to mergers. Some municipalities present in 2020 may not exist under the same name in 2025, which could introduce small inconsistencies in the longitudinal analysis..
+One limitation of this cleaning approach is that municipalities change over time due to mergers. Some municipalities present in 2020 may not exist under the same name in 2025, which could introduce small inconsistencies in the longitudinal analysis.
 
 ## 3.2 Generate necessary variables
 
-Variable 1
+### Variable 1: Housing Pressure
 
 ```{r gen_var1}
 # Variable 1: Housing Pressure
@@ -116,7 +116,7 @@ summary(mdf$housing_pressure)
 
 Housing pressure measures the ratio of households to dwellings in each municipality. A value above 1 indicates that there are more households than available dwellings, suggesting that demand exceeds supply.
 
-Variable 2
+### Variable 2: Paradox Index
 
 ```{r gen_var2}
 # Variable 2: Paradox Index
