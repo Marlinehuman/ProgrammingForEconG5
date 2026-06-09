@@ -1,6 +1,6 @@
 ---
 title: "development of housing pressure and residential vacancy in Dutch municipalities between 2020 and 2025, and understanding coexistence and scarcity through price pressure, rental structure and urban density."
-author: "[Marline Human (2860665)], [Storm Bakker (2852941)], [Nando Fredricks (2888962)], [Student (studentnummer)] and [Jermaine Koreman (2866400)]."
+author: "[Marline Human (2860665)], [Storm Bakker (2852941)], [Nando Fredricks (2888962)], [Jasper Haavekost (2895265)] and [Jermaine Koreman (2866400)]."
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
