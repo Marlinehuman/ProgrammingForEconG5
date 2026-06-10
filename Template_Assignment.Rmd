@@ -93,7 +93,7 @@ All variables are measured at municipality level and are derived from administra
 
 The raw CBS Excel files were cleaned using a separate R script (scripts/Datacleaning.R). The cleaning process involved several deliberate choices.
 
-First, we filtered the dataset to municipality-level observations only (recs == "Gemeente"), excluding neighbourhood and district-level rows. This choice was made because municipalities are the most relevant unit for housing policy analysis — they are the administrative bodies responsible for zoning, construction permits, and social housing allocation. Aggregating to a higher level would obscure important local variation, while neighbourhood-level data would introduce noise and missing values.
+First, we filtered the dataset to municipality-level observations only (recs == "Gemeente"), excluding neighbourhood and district-level rows. This choice was made because municipalities are the most relevant unit for housing policy analysis they are the administrative bodies responsible for zoning, construction permits, and social housing allocation. Aggregating to a higher level would obscure important local variation, while neighbourhood-level data would introduce noise and missing values.
 
 Second, we selected 15 variables from the original dataset of over 100 columns. The selected variables cover housing stock, vacancy, ownership structure, urbanity, population density, and property values — the core dimensions needed to quantify housing pressure and the housing paradox. Variables unrelated to housing (such as health or education indicators) were excluded to keep the analysis focused.
 
@@ -214,7 +214,7 @@ ggplot(nl_map_data) +
   )
 ```
 
-This map reveals substantial spatial variation in the housing paradox across Dutch municipalities. The highest paradox index values are concentrated in municipalities in the western Randstad region — particularly around Amsterdam, Utrecht and The Hague — as well as in parts of Noord-Brabant. This suggests that housing pressure and vacancy coexist most severely in already densely populated urban areas. Notably, several municipalities in Zeeland and Friesland also show elevated values, indicating that the paradox is not exclusively an urban phenomenon. This spatial heterogeneity underlines that national housing policy may be insufficient — targeted regional interventions are likely needed to address the paradox where it is most acute.
+This map reveals substantial spatial variation in the housing paradox across Dutch municipalities. The highest paradox index values are concentrated in municipalities in the western Randstad region particularly around Amsterdam, Utrecht and The Hague as well as in parts of Noord-Brabant. This suggests that housing pressure and vacancy coexist most severely in already densely populated urban areas. Notably, several municipalities in Zeeland and Friesland also show elevated values, indicating that the paradox is not exclusively an urban phenomenon. This spatial heterogeneity underlines that national housing policy may be insufficient targeted regional interventions are likely needed to address the paradox where it is most acute.
 
 ## 3.5 Visualize sub-population variation
 
@@ -237,7 +237,7 @@ mdf %>%
   theme(legend.position = "none")
 ```
 
-The figure shows that housing pressure is highest in strongly and very strongly urban municipalities, with median values close to 1.0 — meaning nearly all dwellings are occupied. Non-urban and slightly urban municipalities show considerably more variation and lower median values, suggesting that housing markets in rural areas are less tight overall. The narrower interquartile range in urban categories indicates that high housing pressure is consistently present across urban municipalities, while rural areas show more heterogeneity. This pattern supports the hypothesis that the housing paradox is primarily driven by urban demand exceeding supply, and suggests that policy interventions targeting vacancy should focus on urbanised areas where pressure is most persistent.
+The figure shows that housing pressure is highest in strongly and very strongly urban municipalities, with median values close to 1.0 meaning nearly all dwellings are occupied. Non-urban and slightly urban municipalities show considerably more variation and lower median values, suggesting that housing markets in rural areas are less tight overall. The narrower interquartile range in urban categories indicates that high housing pressure is consistently present across urban municipalities, while rural areas show more heterogeneity. This pattern supports the hypothesis that the housing paradox is primarily driven by urban demand exceeding supply, and suggests that policy interventions targeting vacancy should focus on urbanised areas where pressure is most persistent.
 
 ```{r subpopulation_table}
 mdf %>%
