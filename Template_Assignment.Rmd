@@ -109,7 +109,7 @@ One limitation of this cleaning approach is that municipalities change over time
 # Variable 1: Housing Pressure
 # Measures the ratio of households to dwellings per municipality
 mdf <- mdf %>%
-  mutate(housing_pressure = households / housing_stock)
+  mutate(housing_pressure = a_hh / a_woning)
 
 summary(mdf$housing_pressure)
 ```
@@ -123,7 +123,7 @@ Housing pressure measures the ratio of households to dwellings in each municipal
 # Combines housing pressure and vacancy to identify municipalities 
 # where shortage and unused capacity coexist
 mdf <- mdf %>%
-  mutate(paradox_index = housing_pressure * vacancy_rate_percent)
+  mutate(paradox_index = housing_pressure * p_leegsw)
 
 summary(mdf$paradox_index)
 ```
