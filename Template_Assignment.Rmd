@@ -59,9 +59,7 @@ By quantifying and visualizing how housing pressure and vacancy vary across Dutc
 
 ## 2.1 Load in the data
 
-The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis.
-
-APA referentie naar de datasets.
+The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis. The data were obtained from the Centraal Bureau voor de Statistiek (2025).
 
 ```{r load_data}
 mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
@@ -77,7 +75,7 @@ This dataset comes from CBS and contains information about Dutch municipalities 
 
 For our project, we mainly use the housing-related information. The dataset contains variables that can help us study housing pressure and vacancy across municipalities. Because the data cover multiple years, it is possible to see whether these patterns have changed over time.
 
-The exact meaning and units of the variables differ and are explained in the CBS metadata **[APA?]** that accompany the dataset.
+The exact meaning and units of the variables differ and are explained in the CBS metadata (Centraal Bureau voor de Statistiek, 2025) that accompany the dataset.
 
 ## 2.3 Describe the type of variables included
 
@@ -162,13 +160,39 @@ The raw CBS Excel files were cleaned using a separate R script (scripts/Dataclea
   # Cleaning per year ----
   
   clean_year <- function(raw_csv, year_val) {
-    df <- read_csv(raw_csv, na = c(".", "", "NA"), show_col_types = FALSE)
+    # Lees alles eerst als text (character) om fouten te voorkomen
+    df <- read_csv(raw_csv, 
+                   na = c(".", "", "NA", " "), 
+                   show_col_types = FALSE,
+                   col_types = cols(.default = col_character()))  # Alles als text
+    
+    # Lijst van kolommen die numeriek zouden moeten zijn
+    numeric_cols <- c("a_woning", "a_hh", "p_leegsw", "g_wozbag", "p_koopw", 
+                      "p_huurw", "p_wcorpw", "p_ov_hw", "ste_mvs", "bev_dich", "a_inw")
+    
+    # Zet deze kolommen veilig om naar numeriek
+    for(col in numeric_cols) {
+      if(col %in% names(df)) {
+        df[[col]] <- as.numeric(as.character(df[[col]]))
+      }
+    }
+    
+    # Filter alleen gemeentes
     df <- df[df$recs == "Gemeente", ]
+    
+    # Voeg jaar toe
     df$year <- year_val
+    
+    # Selecteer alleen de benodigde kolommen
     available <- selected_vars[selected_vars %in% names(df)]
     df <- df[, available]
-    df$g_wozbag <- df$g_wozbag * 1000
-    df
+    
+    # WOZ waarde omzetten van duizenden euros naar euros
+    if("g_wozbag" %in% names(df)) {
+      df$g_wozbag <- df$g_wozbag * 1000
+    }
+    
+    return(df)
   }
   
   kwb2020_selected <- clean_year(here("data", "raw", "kwb2020_raw.csv"), 2020)
@@ -262,7 +286,7 @@ mdf <- mdf %>%
 summary(mdf$paradox_index)
 ```
 
-The paradox index combines housing pressure with vacancy to capture the central puzzle of our research: how can shortage and vacancy coexist? A high paradox index identifies municipalities with both high pressure and high vacancy — the exact contradiction this project seeks to explain. Multiplying both values gives weight to municipalities where both problems occur simultaneously.
+The paradox index combines housing pressure with vacancy to capture the central puzzle of our research: how can shortage and vacancy coexist? A high paradox index identifies municipalities with both high pressure and high vacancy the exact contradiction this project seeks to explain. Multiplying both values gives weight to municipalities where both problems occur simultaneously.
 
 ## 3.3 Visualize temporal variation
 
@@ -445,7 +469,7 @@ Second, the paradox index which captures the simultaneous occurrence of housing 
 
 Third, the spatial and subgroup analyses reveal that the paradox is not uniform. Urban municipalities face the highest and most consistent housing pressure, while the paradox index is elevated in both Randstad municipalities and some peripheral areas such as Zeeland and Friesland. This suggests that the causes of the paradox differ by region: in urban areas it is driven by demand, while in peripheral areas vacancy may reflect demographic decline.
 
-Limitations. Several limitations should be acknowledged. The paradox index is a simple multiplicative measure and does not account for the types of vacant dwellings or the reasons for vacancy. Municipality mergers over the study period may introduce minor inconsistencies. Furthermore, all analyses are observational — the association between the ECB rate hike and the paradox index does not establish causality, and confounding factors such as construction delays and demographic shifts cannot be ruled out.
+Limitations. Several limitations should be acknowledged. The paradox index is a simple multiplicative measure and does not account for the types of vacant dwellings or the reasons for vacancy. Municipality mergers over the study period may introduce minor inconsistencies. Furthermore, all analyses are observational the association between the ECB rate hike and the paradox index does not establish causality, and confounding factors such as construction delays and demographic shifts cannot be ruled out.
 
 # Part 5 - Reproducibility
 
