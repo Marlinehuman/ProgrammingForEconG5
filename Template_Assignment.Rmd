@@ -61,6 +61,8 @@ By quantifying and visualizing how housing pressure and vacancy vary across Dutc
 
 The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis.
 
+APA referentie naar de datasets.
+
 ```{r load_data}
 mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
 ```
@@ -75,7 +77,7 @@ This dataset comes from CBS and contains information about Dutch municipalities 
 
 For our project, we mainly use the housing-related information. The dataset contains variables that can help us study housing pressure and vacancy across municipalities. Because the data cover multiple years, it is possible to see whether these patterns have changed over time.
 
-The exact meaning and units of the variables differ and are explained in the CBS metadata that accompany the dataset.
+The exact meaning and units of the variables differ and are explained in the CBS metadata **[APA?]** that accompany the dataset.
 
 ## 2.3 Describe the type of variables included
 
@@ -92,6 +94,138 @@ All variables are measured at municipality level and are derived from administra
 ## 3.1 Data cleaning
 
 The raw CBS Excel files were cleaned using a separate R script (scripts/Datacleaning.R). The cleaning process involved several deliberate choices.
+
+```{r datacleaning, eval=FALSE}
+# Installing packages which will be used. ----
+  # Run this once in the console, not in the Rmd chunk:
+  # install.packages(c("here","readxl","readr","dplyr","janitor","tidyr","ggplot2","stringr"))
+  
+  # Add packages. ----
+  
+  library(here)
+  library(readxl)
+  library(readr)
+  library(dplyr)
+  library(janitor)
+  library(tidyr)
+  
+  
+  # Import the Excel files for the years: 2020-2025 ----
+  
+  # 2020 ----
+  kwb2020raw <- read_excel(here("data", "raw", "kwb-2020.xlsx"),
+                           sheet = 1, na = c(".", "", "NA"))
+  kwb2020raw <- clean_names(kwb2020raw)
+  write_csv(kwb2020raw, here("data", "raw", "kwb2020_raw.csv"))
+  
+  # 2021 ----
+  kwb2021raw <- read_excel(here("data", "raw", "kwb-2021.xlsx"),
+                           sheet = 1, na = c(".", "", "NA"))
+  kwb2021raw <- clean_names(kwb2021raw)
+  write_csv(kwb2021raw, here("data", "raw", "kwb2021_raw.csv"))
+  
+  # 2022 ----
+  kwb2022raw <- read_excel(here("data", "raw", "kwb-2022.xlsx"),
+                           sheet = 1, na = c(".", "", "NA"))
+  kwb2022raw <- clean_names(kwb2022raw)
+  write_csv(kwb2022raw, here("data", "raw", "kwb2022_raw.csv"))
+  
+  # 2023 ----
+  kwb2023raw <- read_excel(here("data", "raw", "kwb2023.xlsx"),
+                           sheet = 1, na = c(".", "", "NA"))
+  kwb2023raw <- clean_names(kwb2023raw)
+  write_csv(kwb2023raw, here("data", "raw", "kwb2023_raw.csv"))
+  
+  # 2024 ----
+  kwb2024raw <- read_excel(here("data", "raw", "kwb2024.xlsx"),
+                           sheet = 1, na = c(".", "", "NA"))
+  kwb2024raw <- clean_names(kwb2024raw)
+  write_csv(kwb2024raw, here("data", "raw", "kwb2024_raw.csv"))
+  
+  # 2025 ----
+  kwb2025raw <- read_excel(here("data", "raw", "kwb2025.xlsx"),
+                           sheet = 1, na = c(".", "", "NA"))
+  kwb2025raw <- clean_names(kwb2025raw)
+  write_csv(kwb2025raw, here("data", "raw", "kwb2025_raw.csv"))
+  
+  
+  # Selected variables ----
+  
+  selected_vars <- c(
+    "year", "gwb_code", "gm_naam", "recs",
+    "a_woning", "a_hh", "p_leegsw", "g_wozbag",
+    "p_koopw", "p_huurw", "p_wcorpw", "p_ov_hw",
+    "ste_mvs", "bev_dich", "a_inw"
+  )
+  
+  
+  # Cleaning per year ----
+  
+  clean_year <- function(raw_csv, year_val) {
+    df <- read_csv(raw_csv, na = c(".", "", "NA"), show_col_types = FALSE)
+    df <- df[df$recs == "Gemeente", ]
+    df$year <- year_val
+    available <- selected_vars[selected_vars %in% names(df)]
+    df <- df[, available]
+    df$g_wozbag <- df$g_wozbag * 1000
+    df
+  }
+  
+  kwb2020_selected <- clean_year(here("data", "raw", "kwb2020_raw.csv"), 2020)
+  kwb2021_selected <- clean_year(here("data", "raw", "kwb2021_raw.csv"), 2021)
+  kwb2022_selected <- clean_year(here("data", "raw", "kwb2022_raw.csv"), 2022)
+  kwb2023_selected <- clean_year(here("data", "raw", "kwb2023_raw.csv"), 2023)
+  kwb2024_selected <- clean_year(here("data", "raw", "kwb2024_raw.csv"), 2024)
+  kwb2025_selected <- clean_year(here("data", "raw", "kwb2025_raw.csv"), 2025)
+  
+  
+  # Combine all years ----
+  
+  municipal_housing <- bind_rows(
+    kwb2020_selected,
+    kwb2021_selected,
+    kwb2022_selected,
+    kwb2023_selected,
+    kwb2024_selected,
+    kwb2025_selected
+  )
+  
+  # Control steps
+  table(municipal_housing$year)
+  sum(duplicated(paste(municipal_housing$year, municipal_housing$gwb_code)))
+  colSums(is.na(municipal_housing))
+  
+  
+  # Create extra variables ----
+  
+  municipal_housing$housing_pressure         <- municipal_housing$a_hh / municipal_housing$a_woning
+  municipal_housing$effective_housing_stock  <- municipal_housing$a_woning * (1 - municipal_housing$p_leegsw / 100)
+  municipal_housing$vacancy_adjusted_pressure <- municipal_housing$a_hh / municipal_housing$effective_housing_stock
+  municipal_housing$rental_vulnerability     <- municipal_housing$p_huurw - municipal_housing$p_wcorpw
+  municipal_housing$paradox_index            <- municipal_housing$housing_pressure * municipal_housing$p_leegsw
+  
+  municipal_housing$urbanity_label <- NA
+  municipal_housing$urbanity_label[municipal_housing$ste_mvs == 1] <- "Very strongly urban"
+  municipal_housing$urbanity_label[municipal_housing$ste_mvs == 2] <- "Strongly urban"
+  municipal_housing$urbanity_label[municipal_housing$ste_mvs == 3] <- "Moderately urban"
+  municipal_housing$urbanity_label[municipal_housing$ste_mvs == 4] <- "Slightly urban"
+  municipal_housing$urbanity_label[municipal_housing$ste_mvs == 5] <- "Non-urban"
+  
+  national_median_woz <- median(municipal_housing$g_wozbag, na.rm = TRUE)
+  municipal_housing$price_pressure <- municipal_housing$g_wozbag / national_median_woz
+  
+  
+  # Save clean dataset ----
+  
+  write.csv(
+    municipal_housing,
+    here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"),
+    row.names = FALSE
+  )
+  
+  mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
+
+```
 
 First, we filtered the dataset to municipality-level observations only (recs == "Gemeente"), excluding neighbourhood and district-level rows. This choice was made because municipalities are the most relevant unit for housing policy analysis they are the administrative bodies responsible for zoning, construction permits, and social housing allocation. Aggregating to a higher level would obscure important local variation, while neighbourhood-level data would introduce noise and missing values.
 
@@ -203,7 +337,7 @@ ggplot(nl_map_data) +
   ) +
   labs(
     title = "Spatial variation in the housing paradox",
-    subtitle = "Average paradox index per Dutch municipality (2020–2025)",
+    subtitle = "Paradox index = housing pressure × vacancy rate.\nHigher = more severe coexistence of shortage and vacancy. Average 2020–2025.",
     caption = "Source: CBS Kerncijfers Wijken en Buurten"
   ) +
   theme_void() +
@@ -212,6 +346,12 @@ ggplot(nl_map_data) +
     plot.title = element_text(size = 13, face = "bold"),
     plot.subtitle = element_text(size = 10)
   )
+scale_fill_viridis_c(
+  option = "plasma",
+  name = "Paradox index\n(pressure × vacancy %)",
+  limits = c(0, 10),
+  oob = scales::squish
+)
 ```
 
 This map reveals substantial spatial variation in the housing paradox across Dutch municipalities. The highest paradox index values are concentrated in municipalities in the western Randstad region particularly around Amsterdam, Utrecht and The Hague as well as in parts of Noord-Brabant. This suggests that housing pressure and vacancy coexist most severely in already densely populated urban areas. Notably, several municipalities in Zeeland and Friesland also show elevated values, indicating that the paradox is not exclusively an urban phenomenon. This spatial heterogeneity underlines that national housing policy may be insufficient targeted regional interventions are likely needed to address the paradox where it is most acute.
@@ -254,7 +394,7 @@ The table confirms the pattern shown in the boxplot. Very strongly urban municip
 
 ## 3.6 Event analysis
 
-How did the housing paradox index change before and after the ECB interest rate hike in 2022?
+How did the housing paradox index change before and after the ECB interest rate hike in 2022? When the ECB raises interest rates, mortgage rates follow. Higher mortgage rates make borrowing more expensive, which reduces the number of housing transactions fewer people can afford to buy or move. This can simultaneously increase effective vacancy (owners unable to sell, properties sitting empty) while housing pressure remains high due to persistent demand. The 2022 rate hike is therefore a relevant external shock to test in the context of the housing paradox.
 
 ```{r analysis}
 mdf %>%
@@ -274,7 +414,7 @@ mdf %>%
   
   geom_vline(xintercept = 2022, linetype = "dashed", linewidth = 0.8) +
   annotate("text", x = 2022.1, y = 4.28, 
-           label = "ECB rate hike (2022)", hjust = 0, size = 3.5) +
+           label = "ECB rate hike (July 2022)", hjust = 0, size = 3.5) +
   
   annotate("text", x = 2021, y = 4.115, 
            label = "Before", colour = "steelblue", size = 3.5) +
@@ -291,7 +431,7 @@ mdf %>%
   theme_minimal()
 ```
 
-The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB interest rate hike in June 2022. By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions increasing effective vacancy — while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
+The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB the ECB interest rate hike in July 2022 (European Central Bank, 2022). By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions increasing effective vacancy while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
 
 # Part 4 - Discussion
 
@@ -322,3 +462,5 @@ Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). *Nationale Woo
 Planbureau voor de Leefomgeving. (2024). *Ruimtelijke verkenning 2024*. PBL. <https://www.pbl.nl/>
 
 Kences. (2025). *Studentenhuisvesting in Nederland*. Kences. <https://www.kences.nl/>
+
+European Central Bank. (2022, July 21). *ECB raises interest rates for the first time in 11 years*. Euronews. <https://www.euronews.com/business/2022/07/21/ecb-hikes-interest-rates-for-first-time-in-11-years-by-larger-than-expected-amount>
