@@ -5,8 +5,6 @@ date: "`r Sys.Date()`"
 output: pdf_document
 ---
 
-# Set-up your environment
-
 ```{r package_install, include=FALSE}
 # Run once in console, not here:
 # install.packages(c("tidyverse","yaml","rmarkdown","ggplot2","sf","patchwork","cbsodataR","scales","here"))
@@ -79,11 +77,11 @@ The exact meaning and units of the variables differ and are explained in the CBS
 
 ## 2.3 Describe the type of variables included
 
-The dataset contains several types of variables relevant to our analysis. The core housing variables include `housing_stock` (total housing stock), `households` (number of households), and `vacancy_rate_percent` (vacancy rate as a percentage). These are administrative variables collected from municipal registries and housing surveys.
+The dataset contains several types of variables relevant to our analysis. The core housing variables include `a_woning` (total housing stock) and `a_hh` (number of households). Vacancy is captured through `p_leegsw` (vacancy rate as a percentage of total housing stock).
 
-Ownership and rental structure is captured through `owner_occupied_share_percent`, `rental_share_percent`, `corporation_owned_share_percent`, and `private_rental_share_percent` — all expressed as percentages of total housing stock.
+Ownership and rental structure is captured through `p_koopw` (owner-occupied share), `p_huurw` (total rental share), `p_wcorpw` (corporation-owned rental share), and `p_ov_hw` (private rental share) — all expressed as percentages of total housing stock.
 
-Urban density is measured through `urbanity_code` (ranging from 1 = very strongly urban to 5 = non-urban) and `population_density` (per km²). Property values are captured through `average_woz_value_eur`, which serves as a proxy for housing market prices.
+Urban density is measured through `ste_mvs` (urbanity code, ranging from 1 = very strongly urban to 5 = non-urban) and `bev_dich` (population density per km²). Property values are captured through `g_wozbag` (average WOZ value in euros), which serves as a proxy for housing market prices.
 
 All variables are measured at municipality level and are derived from administrative sources rather than surveys, which ensures high coverage but may mask within-municipality variation. The dataset does not include individual-level data, meaning inequality within municipalities cannot be observed directly.
 
@@ -455,7 +453,7 @@ mdf %>%
   theme_minimal()
 ```
 
-The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB the ECB interest rate hike in July 2022 (European Central Bank, 2022). By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions increasing effective vacancy while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
+The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB interest rate hike in July 2022 (European Central Bank, 2022). By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions increasing effective vacancy while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
 
 # Part 4 - Discussion
 
