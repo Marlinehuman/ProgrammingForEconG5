@@ -35,7 +35,7 @@ Tutorial lecturer's name: Chantal Schouwenaar
 
 ## 1.1 Describe the Social Problem
 
-The Dutch housing market is under unprecedented pressure. Across the Netherlands, rental prices have risen sharply, buying a home has become unaffordable for many households, and waiting lists for social housing continue to grow (CBS, 2025; Kences, 2025). At the same time, a paradox emerges: despite the apparent shortage, a significant number of dwellings remain unoccupied in many municipalities.
+The Dutch housing market is under unprecedented pressure. Across the Netherlands, rental prices have risen sharply, buying a home has become unaffordable for many households, and waiting lists for social housing continue to grow (Centraal Bureau voor de Statistiek [CBS], 2025; Kences, 2025). At the same time, a paradox emerges: despite the apparent shortage, a significant number of dwellings remain unoccupied in many municipalities.
 
 This combination of housing pressure and vacancy creates a social problem that does not affect all of the Netherlands equally. In some municipalities, housing pressure is severe and vacancy is low; in others, vacancy rates are surprisingly high despite national shortages. This spatial variation means that the opportunity to find affordable housing increasingly depends on where one lives a form of geographic inequality that affects young adults, lower income households, and people seeking to relocate.
 
@@ -73,7 +73,7 @@ This dataset comes from CBS and contains information about Dutch municipalities 
 
 For our project, we mainly use the housing-related information. The dataset contains variables that can help us study housing pressure and vacancy across municipalities. Because the data cover multiple years, it is possible to see whether these patterns have changed over time.
 
-The exact meaning and units of the variables differ and are explained in the CBS metadata (Centraal Bureau voor de Statistiek, 2025) that accompany the dataset.
+The exact meaning and units of the variables differ and are explained in the CBS metadata (CBS, 2025) that accompany the dataset.
 
 ## 2.3 Describe the type of variables included
 
@@ -447,7 +447,7 @@ mdf %>%
   theme_minimal()
 ```
 
-The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB interest rate hike in July 2022 (European Central Bank, 2022). By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions increasing effective vacancy while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
+The figure shows that the housing paradox index declined slightly between 2020 and 2022, before rising sharply in the years following the ECB interest rate hike in July 2022 (Euronews, 2022). By 2025, the paradox index reached its highest recorded value in the dataset, suggesting that rising borrowing costs may have simultaneously suppressed housing transactions increasing effective vacancy while structural housing shortages persisted. This pattern is consistent with the hypothesis that higher mortgage rates reduced housing market liquidity, trapping both buyers and sellers and thereby intensifying the coexistence of pressure and vacancy. However, this association does not establish causality: other concurrent developments such as construction delays, demographic shifts, or changes in rental market regulation may also have contributed to the observed trend. A more rigorous causal analysis would require controlling for these confounding factors.
 
 # Part 4 - Discussion
 
@@ -471,12 +471,12 @@ Limitations. Several limitations should be acknowledged. The paradox index is a 
 
 ## 5.2 Reference list
 
-Centraal Bureau voor de Statistiek. (2025). *Kerncijfers wijken en buurten 2025* [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/kerncijfers-wijken-en-buurten>
+Centraal Bureau voor de Statistiek. (2025). \*Kerncijfers wijken en buurten 2025\* [Dataset]. CBS. <https://www.cbs.nl/nl-nl/reeksen/kerncijfers-wijken-en-buurten>
 
-Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). *Nationale Woon- en Bouwagenda*. Rijksoverheid. <https://www.rijksoverheid.nl/>
+Euronews. (2022, July 21). \*ECB hikes interest rates for first time in 11 years by larger-than-expected amount\*. <https://www.euronews.com/business/2022/07/21/ecb-hikes-interest-rates-for-first-time-in-11-years-by-larger-than-expected-amount>
 
-Planbureau voor de Leefomgeving. (2024). *Ruimtelijke verkenning 2024*. PBL. <https://www.pbl.nl/>
+Kences. (2025). \*Studentenhuisvesting in Nederland\*. Kences. <https://www.kences.nl/>
 
-Kences. (2025). *Studentenhuisvesting in Nederland*. Kences. <https://www.kences.nl/>
+Ministerie van Binnenlandse Zaken en Koninkrijksrelaties. (2024). \*Nationale Woon- en Bouwagenda\*. Rijksoverheid. <https://www.rijksoverheid.nl/>
 
-European Central Bank. (2022, July 21). *ECB raises interest rates for the first time in 11 years*. Euronews. <https://www.euronews.com/business/2022/07/21/ecb-hikes-interest-rates-for-first-time-in-11-years-by-larger-than-expected-amount>
+Planbureau voor de Leefomgeving. (2024). \*Ruimtelijke verkenning 2024\*. PBL. <https://www.pbl.nl/>
