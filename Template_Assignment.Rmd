@@ -353,7 +353,7 @@ ggplot(nl_map_data) +
   geom_sf(aes(fill = avg_paradox), colour = "white", linewidth = 0.1) +
   scale_fill_viridis_c(
     option = "plasma",
-    name = "Paradox index",
+    name = "Paradox index\n(pressure × vacancy %)",
     limits = c(0, 10),
     oob = scales::squish
   ) +
@@ -368,12 +368,6 @@ ggplot(nl_map_data) +
     plot.title = element_text(size = 13, face = "bold"),
     plot.subtitle = element_text(size = 10)
   )
-scale_fill_viridis_c(
-  option = "plasma",
-  name = "Paradox index\n(pressure × vacancy %)",
-  limits = c(0, 10),
-  oob = scales::squish
-)
 ```
 
 This map reveals substantial spatial variation in the housing paradox across Dutch municipalities. The highest paradox index values are concentrated in municipalities in the western Randstad region particularly around Amsterdam, Utrecht and The Hague as well as in parts of Noord-Brabant. This suggests that housing pressure and vacancy coexist most severely in already densely populated urban areas. Notably, several municipalities in Zeeland and Friesland also show elevated values, indicating that the paradox is not exclusively an urban phenomenon. This spatial heterogeneity underlines that national housing policy may be insufficient targeted regional interventions are likely needed to address the paradox where it is most acute.
@@ -412,7 +406,7 @@ mdf %>%
   arrange(desc(median_pressure))
 ```
 
-The table confirms the pattern shown in the boxplot. Very strongly urban municipalities show the highest median housing pressure (approximately 0.998), while non-urban municipalities have the lowest (approximately 0.972). This difference of roughly 0.026 points may appear small in absolute terms, but given that a value of 1.0 represents full occupancy, even small differences near the ceiling indicate meaningfully tighter housing markets in urban areas.
+> The table confirms the pattern shown in the boxplot. Very strongly urban municipalities show the highest median housing pressure (approximately 1.03), while non-urban municipalities have the lowest (approximately 0.98). This difference of roughly 0.05 points may appear small in absolute terms, but given that a value of 1.0 represents full occupancy, even small differences near the ceiling indicate meaningfully tighter housing markets in urban areas.
 
 ## 3.6 Event analysis
 
