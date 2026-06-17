@@ -57,7 +57,7 @@ By quantifying and visualizing how housing pressure and vacancy vary across Dutc
 
 ## 2.1 Load in the data
 
-The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis. The data were obtained from the Centraal Bureau voor de Statistiek (2025).
+The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis. The data were obtained from the Centraal Bureau voor de Statistiek (2025). **singel per year total 8 dataset**
 
 ```{r load_data}
 mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
@@ -91,7 +91,7 @@ All variables are measured at municipality level and are derived from administra
 
 The raw CBS Excel files were cleaned using a separate R script (scripts/Datacleaning.R). The cleaning process involved several deliberate choices.
 
-```{r datacleaning, eval=FALSE}
+```{r datacleaning, include=FALSE}
 # Installing packages which will be used. ----
   # Run this once in the console, not in the Rmd chunk:
   # install.packages(c("here","readxl","readr","dplyr","janitor","tidyr","ggplot2","stringr"))
@@ -261,7 +261,7 @@ One limitation of this cleaning approach is that municipalities change over time
 
 ### Variable 1: Housing Pressure
 
-```{r gen_var1}
+```{r gen_var1, echo=FALSE}
 # Variable 1: Housing Pressure
 # Measures the ratio of households to dwellings per municipality
 mdf <- mdf %>%
@@ -274,7 +274,7 @@ Housing pressure measures the ratio of households to dwellings in each municipal
 
 ### Variable 2: Paradox Index
 
-```{r gen_var2}
+```{r gen_var2, echo=FALSE}
 # Variable 2: Paradox Index
 # Combines housing pressure and vacancy to identify municipalities 
 # where shortage and unused capacity coexist
@@ -288,7 +288,7 @@ The paradox index combines housing pressure with vacancy to capture the central 
 
 ## 3.3 Visualize temporal variation
 
-```{r temporal_variation}
+```{r temporal_variation, echo=FALSE}
 library(patchwork)
 
 # Trend housing pressure
@@ -335,7 +335,7 @@ The paradox index (right panel) shows a more complex pattern: a sharp decline be
 
 ## 3.4 Visualize spatial variation
 
-```{r visualise_map}
+```{r visualise_map, echo=FALSE}
 # Shapefile ophalen van CBS
 nl_map <- cbs_get_sf("gemeente", year = 2023)
 
@@ -351,8 +351,9 @@ nl_map_data <- nl_map |>
 # Kaart plotten
 ggplot(nl_map_data) +
   geom_sf(aes(fill = avg_paradox), colour = "white", linewidth = 0.1) +
-  scale_fill_viridis_c(
-    option = "plasma",
+  scale_fill_distiller(
+    palette = "Blues",
+    direction = 1,
     name = "Paradox index\n(pressure × vacancy %)",
     limits = c(0, 10),
     oob = scales::squish
@@ -376,7 +377,7 @@ This map reveals substantial spatial variation in the housing paradox across Dut
 
 > What is the distribution of housing pressure across municipalities with different urbanity levels?
 
-```{r visualise_subpopulations}
+```{r visualise_subpopulations, echo=FALSE}
 mdf %>%
   mutate(urbanity_label = as.factor(urbanity_label)) %>%
   ggplot(aes(x = urbanity_label, y = housing_pressure, 
@@ -395,7 +396,7 @@ mdf %>%
 
 The figure shows that housing pressure is highest in strongly and very strongly urban municipalities, with median values close to 1.0 meaning nearly all dwellings are occupied. Non-urban and slightly urban municipalities show considerably more variation and lower median values, suggesting that housing markets in rural areas are less tight overall. The narrower interquartile range in urban categories indicates that high housing pressure is consistently present across urban municipalities, while rural areas show more heterogeneity. This pattern supports the hypothesis that the housing paradox is primarily driven by urban demand exceeding supply, and suggests that policy interventions targeting vacancy should focus on urbanised areas where pressure is most persistent.
 
-```{r subpopulation_table}
+```{r subpopulation_table, echo=FALSE}
 mdf %>%
   group_by(urbanity_label) %>%
   summarise(
@@ -412,7 +413,7 @@ mdf %>%
 
 How did the housing paradox index change before and after the ECB interest rate hike in 2022? When the ECB raises interest rates, mortgage rates follow. Higher mortgage rates make borrowing more expensive, which reduces the number of housing transactions fewer people can afford to buy or move. This can simultaneously increase effective vacancy (owners unable to sell, properties sitting empty) while housing pressure remains high due to persistent demand. The 2022 rate hike is therefore a relevant external shock to test in the context of the housing paradox.
 
-```{r analysis}
+```{r analysis, echo=FALSE}
 mdf %>%
   group_by(year) %>%
   summarise(avg_paradox = mean(paradox_index, na.rm = TRUE)) %>%
