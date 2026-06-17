@@ -43,7 +43,7 @@ This combination of housing pressure and vacancy creates a social problem that d
 
 This problem is relevant for several reasons:
 
-**1. Economic relevance.** The housing market is a cornerstone of the economy. Rising housing costs reduce disposable income, limit labor mobility, and contribute to wealth inequality between homeowners and renters (CBS, 2025). Geographic differences in housing pressure also shape patterns of regional economic development.
+**1. Economic relevance.** The housing market is a cornerstone of the economy. Rising housing costs reduce disposable income, limit labor mobility, and contribute to wealth inequality between homeowners and renters (CBS, 2025). Geographic differences in housing pressure also shape patterns of regional economic development. This pattern has also been identified at the national level by spatial planning research, which points to liquidity constraints and regional mismatches between housing supply and demand as key structural drivers (Planbureau voor de Leefomgeving, 2024).
 
 **2. Social relevance.** Access to affordable housing is widely considered a basic right. When access depends heavily on geography, spatial inequality deepens and social cohesion is undermined. The coexistence of shortage and vacancy raises difficult questions about the efficiency and fairness of the housing system.
 
@@ -249,13 +249,13 @@ The raw CBS Excel files were cleaned using a separate R script (scripts/Dataclea
 
 ```
 
-First, we filtered the dataset to municipality-level observations only (recs == "Gemeente"), excluding neighbourhood and district-level rows. This choice was made because municipalities are the most relevant unit for housing policy analysis they are the administrative bodies responsible for zoning, construction permits, and social housing allocation. Aggregating to a higher level would obscure important local variation, while neighbourhood-level data would introduce noise and missing values.
+First, we filtered the dataset to municipality-level observations only (recs == "Gemeente"), excluding neighbourhood and district-level rows. This choice was made because municipalities are the most relevant unit for housing policy analysis — they are the administrative bodies responsible for zoning, construction permits, and social housing allocation. The trade-off is that we lose within-municipality variation: a municipality with high average housing pressure may still contain neighbourhoods with severe vacancy, which our analysis cannot detect.
 
-Second, we selected 15 variables from the original dataset of over 100 columns. The selected variables cover housing stock, vacancy, ownership structure, urbanity, population density, and property values — the core dimensions needed to quantify housing pressure and the housing paradox. Variables unrelated to housing (such as health or education indicators) were excluded to keep the analysis focused.
+Second, we selected 15 variables from the original dataset of over 100 columns. The selected variables cover housing stock, vacancy, ownership structure, urbanity, population density, and property values — the core dimensions needed to quantify housing pressure and the housing paradox. The trade-off here is that variables potentially relevant to housing (such as income or migration data) were excluded to keep the analysis focused and the dataset manageable, which means our model cannot account for these confounding factors.
 
-Third, the WOZ value variable (`g_wozbag`) was multiplied by 1000 to convert it from thousands of euros to euros, ensuring the unit is interpretable and consistent with other monetary variables.
+Third, the WOZ value variable (`g_wozbag`) was multiplied by 1000 to convert it from thousands of euros to euros, ensuring the unit is interpretable and consistent with other monetary variables. This is a unit conversion rather than a substantive trade-off.
 
-One limitation of this cleaning approach is that municipalities change over time due to mergers. Some municipalities present in 2020 may not exist under the same name in 2025, which could introduce small inconsistencies in the longitudinal analysis.
+One limitation of this cleaning approach is that municipalities change over time due to mergers. Some municipalities present in 2020 may not exist under the same name in 2025, which could introduce small inconsistencies in the longitudinal analysis. Because we use direct name matching rather than an official municipality concordance table, a small number of merged municipalities may not perfectly align across years, which slightly reduces the effective sample size for time-series comparisons.
 
 ## 3.2 Generate necessary variables
 
@@ -285,6 +285,8 @@ summary(mdf$paradox_index)
 ```
 
 The paradox index combines housing pressure with vacancy to capture the central puzzle of our research: how can shortage and vacancy coexist? A high paradox index identifies municipalities with both high pressure and high vacancy the exact contradiction this project seeks to explain. Multiplying both values gives weight to municipalities where both problems occur simultaneously.
+
+We chose multiplication rather than addition to combine housing pressure and vacancy because the housing paradox is specifically about *coexistence*: a municipality with high pressure but zero vacancy, or high vacancy but no pressure, does not represent the paradox we are studying. Multiplication ensures the index is only high when both conditions are present simultaneously. Because housing pressure typically ranges between 0.8 and 1.3 and vacancy rate is a percentage (typically 2–10), the resulting paradox index has no fixed theoretical maximum, but in practice ranges roughly between 1 and 22 in our data, with higher values indicating more severe coexistence of shortage and unused capacity.
 
 ## 3.3 Visualize temporal variation
 
