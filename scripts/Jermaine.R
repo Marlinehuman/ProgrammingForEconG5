@@ -1,3 +1,6 @@
+This is not a part of  the final document. this is purely to test whether code runs.
+
+
 ---
   title: "development of housing pressure and residential vacancy in Amsterdam, Rotterdam and Utrecht between 2020 and 2025, and understanding coexistence and scarcity through price pressure, rental structure and urban density."
 author: "Studentnames and studentnumbers here"
