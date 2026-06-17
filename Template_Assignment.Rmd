@@ -57,7 +57,7 @@ By quantifying and visualizing how housing pressure and vacancy vary across Dutc
 
 ## 2.1 Load in the data
 
-The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis. The data were obtained from the Centraal Bureau voor de Statistiek (2025). **singel per year total 8 dataset**
+The data were obtained from the CBS publication *Kerncijfers wijken en buurten*. The Excel files for the years 2020–2025 were downloaded from the CBS website and stored locally outside the GitHub repository. The files were then imported and combined into a single dataset for analysis. The data were obtained from the Centraal Bureau voor de Statistiek (2025). Each year is provided as a separate dataset, resulting in six datasets in total, which were merged into one combined panel dataset covering 2020–2025.
 
 ```{r load_data}
 mdf <- read.csv(here("data", "clean", "CLEANED_municipal_housing_2020_2025.csv"))
